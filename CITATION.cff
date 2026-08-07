@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "Chile-ED-Resp Benchmark"
+message: "Please cite the archived dataset release and the accompanying Data Descriptor."
+type: dataset
+version: 1.0.0
+date-released: 2026-08-05
+license: CC-BY-4.0
+repository-code: "https://github.com/REPLACE-WITH-USERNAME/chile-ed-resp-benchmark"
+doi: "10.5281/zenodo.REPLACE-AFTER-RELEASE"
+authors:
+  - family-names: "Fernandez-Bastias"
+    given-names: "Jorge"
+  - family-names: "Salinas-Neira"
+    given-names: "Brandon"
+  - family-names: "Angulo-Larenas"
+    given-names: "Carla"
+    orcid: "https://orcid.org/0000-0003-3190-542X"
+keywords:
+  - synthetic dataset
+  - hospital demand
+  - emergency department
+  - respiratory illness
+  - time-series forecasting

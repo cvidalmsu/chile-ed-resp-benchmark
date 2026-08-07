@@ -1,0 +1,15 @@
+{
+  "title": "Chile-ED-Resp Benchmark: A Reproducible Synthetic Weekly Dataset for Respiratory Emergency-Demand Forecasting",
+  "upload_type": "dataset",
+  "description": "Deterministic synthetic weekly benchmark with nine hospital profiles and 192 epidemiological weeks per site. All observations are synthetic and are not suitable for clinical or operational decision making.",
+  "creators": [
+    {"name": "Fernandez-Bastias, Jorge"},
+    {"name": "Salinas-Neira, Brandon"},
+    {"name": "Angulo-Larenas, Carla", "orcid": "0000-0003-3190-542X"}
+  ],
+  "license": "cc-by-4.0",
+  "keywords": ["synthetic data", "hospital demand", "emergency department", "respiratory illness", "forecasting", "Chile"],
+  "related_identifiers": [
+    {"identifier": "https://github.com/REPLACE-WITH-USERNAME/chile-ed-resp-benchmark", "relation": "isSupplementTo", "scheme": "url"}
+  ]
+}

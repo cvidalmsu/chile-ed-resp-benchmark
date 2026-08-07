@@ -1,0 +1,413 @@
+\documentclass[data,datadescriptor,submit,moreauthors,pdftex]{Definitions/mdpi}
+\microtypesetup{expansion=false}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,tabularx,array,ragged2e,multirow,longtable}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc,shapes.geometric}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage{siunitx}
+\setlength{\headheight}{25pt}
+\setlength{\emergencystretch}{2em}
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcommand{\datasetname}{Chile-ED-Resp Benchmark}
+\newcommand{\datasetversion}{1.0.0}
+\newcommand{\dataseturl}{https://github.com/cvidalmsu/chile-ed-resp-benchmark}
+\newcommand{\datasetdoi}{https://doi.org/10.5281/zenodo.REPLACE-AFTER-RELEASE}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,columns=fullflexible,showstringspaces=false}
+
+\firstpage{1}
+\makeatletter
+\setcounter{page}{\@firstpage}
+\makeatother
+\pubvolume{1}
+\issuenum{1}
+\articlenumber{0}
+\pubyear{2026}
+\copyrightyear{2026}
+\datereceived{}
+\dateaccepted{}
+\datepublished{}
+\hreflink{https://doi.org/}
+
+\Title{Chile-ED-Resp: A Reproducible Synthetic Weekly Benchmark Dataset for Respiratory Emergency-Demand Forecasting in Chile}
+\TitleCitation{Chile-ED-Resp: A Synthetic Benchmark for Respiratory Emergency-Demand Forecasting}
+
+\newcommand{\orcidauthorA}{0000-0003-3190-542X}
+\Author{Jorge Fern\'andez-Bast\'ias~$^{1}$, Brandon Salinas-Neira~$^{1}$ and Carla Angulo-Larenas~$^{1,}$*\orcidA{}}
+\AuthorNames{Jorge Fern\'andez-Bast\'ias, Brandon Salinas-Neira and Carla Angulo-Larenas}
+\AuthorCitation{Fern\'andez-Bast\'ias, J.; Salinas-Neira, B.; Angulo-Larenas, C.}
+\address{$^{1}$~Escuela de Ciencias Digitales y Tecnolog\'ias Avanzadas, Universidad Bernardo O'Higgins, Avenida Viel 1497, Santiago 8370993, Chile; carla.angulo@ubo.cl}
+\corres{Correspondence: carla.angulo@ubo.cl}
+
+\abstract{Open respiratory emergency-demand data are valuable for forecasting research, but direct comparison of statistical and machine-learning methods is often constrained by incomplete documentation, changing source schemas, confidentiality concerns, and the absence of a compact multi-hospital benchmark. The \datasetname{} is a deterministic, fully synthetic, and reproducible weekly panel designed to support transparent experimentation on respiratory emergency-demand forecasting under the temporal granularity available in Chilean public reporting. The release contains 1728 hospital-week records representing nine synthetic public-hospital profiles over 192 epidemiological weeks from 2022-W01 to 2025-W36. Each record combines seven cause-specific respiratory-demand counts, five age-group totals, meteorological proxies, calendar indicators, an outbreak-intensity index, provenance fields, quality flags, and a predefined 156-week training/36-week testing partition. Generation rules reproduce documented domain characteristics, including a strong austral autumn--winter peak around epidemiological week 20, heterogeneous site volumes, positive co-movement among respiratory causes, declining COVID-19 counts, and inverse association between temperature and respiratory demand. Structural validation confirmed unique site-week keys, complete values, non-negative counts, exact arithmetic consistency between cause and age totals, and identical temporal coverage across sites. As an illustrative technical check, seasonal-naive, SARIMA, and SARIMAX baselines achieved test-set MAPE values between 7.62\% and 8.27\% for the reference hospital profile. The package includes CSV and compressed CSV files, a machine-readable data dictionary, SHA-256 checksums, deterministic generation and validation scripts, baseline predictions, figures, repository metadata, and instructions for GitHub and Zenodo publication. All observations are synthetic and are intended for methods development, teaching, reproducibility exercises, and forecasting benchmarks rather than clinical or operational decision making.}
+\dataset{\datasetname{}, version \datasetversion{}. Repository placeholder: \url{\dataseturl}. A versioned DOI must be inserted after archiving the GitHub release in Zenodo: \url{\datasetdoi}.}
+\datasetlicense{Dataset and documentation: Creative Commons Attribution 4.0 International (CC BY 4.0); source code: MIT License.}
+\keyword{synthetic dataset; emergency department; respiratory illness; time series; hospital demand; forecasting benchmark; SARIMA; SARIMAX; reproducibility; Chile}
+
+\begin{document}
+
+\section{Summary}
+\label{sec:summary}
+
+Respiratory illness creates recurrent pressure on emergency departments because seasonal epidemics can concentrate demand within a small number of weeks and require simultaneous adjustments to staff, beds, diagnostic capacity, and supplies. Forecasting studies have therefore evaluated statistical, machine-learning, and deep-learning models for emergency attendance and hospital resource planning \citep{Lucini2020,Duarte2021,Albrecht2024}. Within Chile, public surveillance reports show pronounced seasonal behavior in respiratory consultations, while regional evidence also documents substantial variation by consultation cause, age group, and epidemiological period \citep{ToroCastillo2024,DiazCarvajal2025}. Reusable benchmarking remains difficult, however, because the public source files are large, operational schemas may change, and hospital-level data can invite inappropriate interpretations when detached from their provenance and reporting limitations.
+
+Against this background, the \datasetname{} was constructed as a controlled benchmark rather than as a substitute for official surveillance records. Synthetic datasets are increasingly used to support reproducible experimentation when access, privacy, annotation, or comparability limits the reuse of real observations; recent contributions to \textit{Data} demonstrate that synthetic benchmarks can be publishable scientific resources when generation procedures, validation criteria, intended uses, and limitations are made explicit \citep{Dauletov2026}. Complementary data descriptors have also emphasized that reusable releases require harmonized files, machine-readable dictionaries, provenance logs, checksums, quality-control procedures, and clear reuse warnings rather than a data file alone \citep{Voinea2026,ArevaloHerrera2026}.
+
+Accordingly, the released benchmark encodes the variable families and weekly structure used in respiratory emergency-demand analysis while avoiding any claim that its observations correspond to real hospitals or patients. Nine site profiles span low-volume rural, medium regional, high-volume urban, and reference tertiary configurations. Each profile contains 192 consecutive epidemiological weeks: 156 weeks covering 2022--2024 are designated for training, and 36 weeks covering 2025-W01 through 2025-W36 are designated for testing. The temporal partition mirrors a realistic forecasting exercise in which all test observations occur strictly after the training period.
+
+From a data-centric perspective, the principal contribution is a complete release package that can be regenerated byte-for-byte from a fixed seed. The package includes the main panel, a feature-enriched reference series, validation outputs, model baselines, figures, checksums, repository metadata, and an optional script for constructing a separate real-data panel from the official Chilean Department of Health Statistics and Information (DEIS) resource. The optional builder is not used to generate the bundled synthetic data, and any derived real-data output remains subject to the official source license \citep{DEIS2026,DEISDictionary2024}.
+
+\section{Data Description}
+\label{sec:data-description}
+
+\subsection{Dataset Overview}
+
+The main table contains 1728 records obtained from nine sites multiplied by 192 weeks. The temporal interval begins on 3 January 2022 and ends on 1 September 2025. Thirty-one columns describe identifiers, site profiles, epidemiological time, respiratory causes, age-group counts, external variables, quality and partition indicators, and reproducibility metadata. Descriptive statistics for the principal numeric fields are shown in Table~\ref{tab:summary-stats}. The mean synthetic count for high respiratory infection is 504.24 consultations per site-week, ranging from 128 to 1350, while total respiratory demand ranges from 268 to 2299.
+
+\begin{table}[H]
+\caption{Descriptive statistics for selected variables in the main weekly panel.}
+\label{tab:summary-stats}
+\centering
+\begin{tabular}{lrrrrr}
+\toprule
+Variable & Mean & SD & Minimum & Median & Maximum \\
+\midrule
+High respiratory infection & 504.24 & 227.29 & 128 & 449.50 & 1350 \\
+Respiratory total & 884.80 & 408.96 & 268 & 780.00 & 2299 \\
+Mean temperature (\si{\celsius}) & 14.09 & 5.00 & 3.01 & 14.54 & 24.77 \\
+Precipitation (mm) & 10.89 & 8.58 & 0.19 & 8.83 & 39.72 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Figure~\ref{fig:seasonality} shows the annual profile averaged across sites. Demand rises from approximately week 10, reaches its maximum around week 20, and decreases through the subsequent weeks. The shaded interval identifies the intended high-pressure respiratory window used during dataset design. Inter-annual variability is preserved through stochastic innovations, year-specific influenza intensity, and the declining COVID-19 component.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/annual_seasonal_profiles.png}
+\caption{Annual seasonal profiles of synthetic high-respiratory-infection demand averaged across the nine sites. The shaded interval marks epidemiological weeks 10--22.}
+\label{fig:seasonality}
+\end{figure}
+
+\subsection{Site Profiles}
+
+Hospital heterogeneity is represented through deterministic scale factors and categorical site profiles rather than through real institution names. Table~\ref{tab:sites} summarizes the nine profiles. The H09 reference tertiary profile has the largest mean weekly demand and is used for the baseline forecasting example. Site identifiers are deliberately artificial to prevent accidental attribution of synthetic values to identifiable hospitals.
+
+\begin{table}[H]
+\caption{Synthetic site profiles and high-respiratory-demand distributions.}
+\label{tab:sites}
+\centering
+\begin{tabularx}{\linewidth}{lLrrrr}
+\toprule
+Site & Profile & Mean & SD & Minimum & Maximum \\
+\midrule
+H01 & Low-volume rural & 293.5 & 95.1 & 128 & 500 \\
+H02 & Medium regional & 384.5 & 135.2 & 195 & 681 \\
+H03 & Medium regional & 429.0 & 147.0 & 181 & 727 \\
+H04 & High-volume urban & 544.9 & 188.6 & 277 & 954 \\
+H05 & Medium regional & 471.2 & 167.7 & 225 & 862 \\
+H06 & High-volume urban & 610.4 & 218.7 & 261 & 1114 \\
+H07 & Medium regional & 470.3 & 171.6 & 174 & 816 \\
+H08 & High-volume urban & 570.2 & 207.2 & 215 & 1073 \\
+H09 & Reference tertiary & 764.1 & 286.4 & 308 & 1350 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/site_mean_demand.png}
+\caption{Mean weekly high-respiratory-infection demand by synthetic site.}
+\label{fig:sites}
+\end{figure}
+
+\subsection{Released Files and Repository Structure}
+
+The repository follows a transparent organization similar to recent reproducible releases in \textit{Data}, where primary observations, documentation, code, validation outputs, and generated figures are separated but versioned together \citep{Voinea2026,Dou2026}. Table~\ref{tab:files} describes the principal files. A complete tree is also included in \path{README.md}.
+
+\begin{table}[H]
+\caption{Principal files included in version \datasetversion{}.}
+\label{tab:files}
+\centering
+\small
+\begin{tabularx}{\linewidth}{P{0.30\linewidth}L}
+\toprule
+Path & Content \\
+\midrule
+\path{data/chile_ed_resp_weekly_panel.csv} & Main 1728-row panel with nine sites and 192 weeks per site. \\
+\path{data/chile_ed_resp_weekly_panel.csv.gz} & Compressed copy of the main panel for repository download. \\
+\path{data/reference_hospital_features.csv} & H09 series with lags, rolling means, and annual sine/cosine features. \\
+\path{data/metadata.json} & Machine-readable dataset-level metadata, temporal coverage, license, and disclaimer. \\
+\path{data/SHA256SUMS.txt} & SHA-256 checksums for released data artifacts. \\
+\path{docs/data_dictionary.csv} & Complete field-level dictionary with type, unit, range, and description. \\
+\path{scripts/generate_dataset.py} & Deterministic generator using seed 20260805. \\
+\path{scripts/validate_dataset.py} & Structural, arithmetic, temporal, and statistical validation. \\
+\path{scripts/baseline_forecasting.py} & Seasonal-naive, SARIMA, and SARIMAX baseline evaluation. \\
+\path{scripts/reproduce_figures.py} & Recreates every figure used in the descriptor. \\
+\path{scripts/build_real_deis_panel.py} & Optional and separate builder for the official DEIS Parquet source. \\
+\path{results/} & Validation report, baseline metrics, predictions, and descriptive summaries. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Variable Groups}
+
+The field design was informed by the official DEIS weekly respiratory-emergency dictionary, which includes establishment identifiers, location and service descriptors, epidemiological year and week, cause categories, total counts, and age-stratified counts \citep{DEISDictionary2024}. Because the bundled resource is synthetic, identifiable establishment names, administrative codes, geographic coordinates, and actual service dependencies are not reproduced. Instead, the benchmark retains the analytical structure required for forecasting and introduces explicit provenance fields.
+
+\begin{table}[H]
+\caption{Variable groups in the main panel. The complete field-by-field dictionary is provided as a CSV file in the documentation directory.}
+\label{tab:variables}
+\centering
+\begin{tabularx}{\linewidth}{P{0.22\linewidth}P{0.38\linewidth}L}
+\toprule
+Group & Fields & Purpose \\
+\midrule
+Identifiers & \texttt{record\_id}, \texttt{site\_id}, \texttt{site\_profile}, \texttt{region\_group}, \texttt{sequence\_index} & Unique keys and non-identifying site design. \\
+Time & \texttt{year}, \texttt{epi\_week}, \texttt{week\_start} & Ordered epidemiological time grid. \\
+Respiratory causes & Seven cause-specific counts and \texttt{respiratory\_total} & Forecasting targets and exogenous respiratory indicators. \\
+Age groups & Five mutually exclusive age-count fields & Demographic decomposition whose sum equals \texttt{respiratory\_total}. \\
+External variables & Temperature, precipitation, holiday, school vacation, outbreak intensity & Calendar and environmental covariates. \\
+Quality and reuse & Quality flag, recommended split, synthetic flag, seed, version & Validation, reproducibility, and misuse prevention. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Data Types and Arithmetic Constraints}
+
+Count variables are stored as non-negative integers. Temperature, precipitation, and outbreak intensity are stored as decimal values. Calendar indicators and the synthetic flag are binary integers. The principal arithmetic constraints are given in Equations~\eqref{eq:cause-sum} and \eqref{eq:age-sum}, where all equalities are enforced row by row.
+
+\begin{equation}
+\label{eq:cause-sum}
+R_{s,t}=H_{s,t}+I_{s,t}+P_{s,t}+B_{s,t}+O_{s,t}+C^{+}_{s,t}+C^{u}_{s,t},
+\end{equation}
+
+\begin{equation}
+\label{eq:age-sum}
+R_{s,t}=A^{<1}_{s,t}+A^{1-4}_{s,t}+A^{5-14}_{s,t}+A^{15-64}_{s,t}+A^{65+}_{s,t},
+\end{equation}
+
+where $R_{s,t}$ is total respiratory demand for site $s$ and week $t$; $H$, $I$, $P$, $B$, $O$, $C^{+}$, and $C^{u}$ denote high respiratory infection, influenza, pneumonia, bronchial crisis, other respiratory causes, identified COVID-19, and unidentified COVID-19, respectively; and the $A$ terms denote age-stratified counts.
+
+\subsection{Potential Applications}
+
+Several reuse scenarios are supported. Forecasting researchers can compare classical seasonal models, machine-learning regressors, recurrent networks, transformers, and hybrid approaches using a common chronological partition. Data-science courses can use the panel for time-series visualization, lag engineering, cross-validation, feature selection, missing-data exercises on user-created copies, and reproducibility assignments. Software-engineering courses can test data pipelines, continuous integration, schema validation, and release automation. Health-informatics researchers can prototype dashboards and resource-planning interfaces without handling real patient or hospital activity. Comparable data descriptors show the value of combining an accessible resource with clear file organization and user notes for downstream experimentation \citep{Kiwoli2026,AitIchou2026}.
+
+\section{Methods}
+\label{sec:methods}
+
+\subsection{Design Principles}
+
+Dataset construction followed five principles: determinism, temporal realism, controlled heterogeneity, arithmetic integrity, and explicit non-clinical status. Determinism is achieved through NumPy's pseudorandom generator with seed 20260805. Temporal realism is introduced through annual seasonality, inter-annual respiratory variation, and autocorrelated innovations. Controlled heterogeneity is encoded through nine site-scale factors and three broad synthetic region groups. Arithmetic integrity ensures exact reconciliation of causes and age groups. Explicit non-clinical status is repeated in the metadata, README, license notes, article, and the \texttt{is\_synthetic} field.
+
+The workflow adapts the traceability emphasis of CRISP-DM \citep{Chapman2000} but is organized around data generation rather than predictive-model selection. Figure~\ref{fig:pipeline} summarizes the pipeline from design parameters to a versioned release.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.75cm and 0.75cm, every node/.style={font=\small}, box/.style={draw, rounded corners=3pt, align=center, minimum height=1.05cm, text width=3.0cm, fill=gray!8}, arrow/.style={-Latex, thick}]
+\node[box] (design) {Design parameters\\sites, weeks, profiles};
+\node[box, right=of design] (season) {Seasonal and exogenous\\latent components};
+\node[box, right=of season] (counts) {Cause-specific and\\age-stratified counts};
+\node[box, below=of season] (validate) {Structural and statistical\\validation};
+\node[box, left=of validate] (baseline) {Forecasting baselines\\and predictions};
+\node[box, right=of validate] (release) {Versioned files, metadata,\\checksums, and figures};
+\draw[arrow] (design) -- (season);
+\draw[arrow] (season) -- (counts);
+\draw[arrow] (counts) -- (validate);
+\draw[arrow] (validate) -- (baseline);
+\draw[arrow] (validate) -- (release);
+\draw[arrow] (baseline) -- (release);
+\end{tikzpicture}
+\caption{Deterministic generation and release pipeline.}
+\label{fig:pipeline}
+\end{figure}
+
+\subsection{Temporal Grid and Site Scaling}
+
+The grid contains 52 epidemiological weeks for each of 2022, 2023, and 2024, followed by weeks 1--36 of 2025. For each site, a scale parameter controls the expected magnitude of all cause-specific series. Values range from 0.58 for H01 to 1.32 for H09. Region groups modify the baseline and amplitude of temperature and precipitation, but they are synthetic categories rather than real administrative regions.
+
+\subsection{Seasonality and External Variables}
+
+Austral respiratory seasonality is represented by a Gaussian-shaped winter component centered on week 20 and a smaller late-year component centered on week 39. The winter component is defined as
+
+\begin{equation}
+W_t=\exp\left[-\frac{1}{2}\left(\frac{w_t-20}{6.5}\right)^2\right],
+\end{equation}
+
+where $w_t$ is the epidemiological week. A secondary component $L_t$ uses center 39 and width 7.5. Temperature follows a region-specific annual cosine with its highest values near the beginning of the year, while precipitation follows an approximately inverse annual pattern plus gamma-distributed positive noise. Holiday and school-vacation weeks are represented by binary indicators.
+
+Influenza, pneumonia, bronchial crisis, other respiratory causes, and COVID-19 series are generated from Poisson distributions whose rates depend on site scale and the seasonal components. The COVID-19 baseline declines by year to reproduce a decreasing contribution over the 2022--2025 interval. High respiratory infection is then generated from a linear combination of latent seasonal terms, observed synthetic respiratory covariates, temperature deviation, calendar effects, and an autoregressive disturbance.
+
+\subsection{Age-Stratified Counts}
+
+Age counts are generated with a multinomial distribution conditional on total respiratory demand. The base proportions are 5.5\% for younger than one year, 13.5\% for ages 1--4, 19.0\% for ages 5--14, 50.0\% for ages 15--64, and 12.0\% for ages 65 or older. During the winter component, the proportions for the three pediatric groups increase modestly while the adult proportion decreases, after which the vector is normalized to sum to one. Multinomial allocation guarantees exact agreement with total respiratory demand.
+
+\subsection{Quality Flags}
+
+No missing values, duplicates, negative counts, or arithmetic inconsistencies are inserted. Weeks with high outbreak intensity and unusually high demand are retained and labeled \texttt{extreme\_but\_valid}; all remaining records receive the \texttt{complete} flag. The release contains 189 extreme-but-valid records and 1539 complete records. The flag teaches users to distinguish plausible epidemiological extremes from data errors rather than removing high values automatically.
+
+\subsection{Deterministic Reproduction}
+
+Complete reproduction requires Python 3.11 or later and the packages listed in \texttt{requirements.txt}. From the repository root, the full release can be regenerated with:
+
+\begin{lstlisting}[language=bash]
+python scripts/generate_dataset.py --output-dir data
+python scripts/validate_dataset.py --input data/chile_ed_resp_weekly_panel.csv --output-dir results
+python scripts/baseline_forecasting.py --input data/chile_ed_resp_weekly_panel.csv --output-dir results
+python scripts/reproduce_figures.py --data data/chile_ed_resp_weekly_panel.csv --metrics results/baseline_metrics.csv --predictions results/baseline_predictions.csv --output-dir figures
+\end{lstlisting}
+
+Generated file hashes are recorded in \path{data/SHA256SUMS.txt}. Re-running the generator with the same software environment and seed should reproduce the released observations; differences in compressed-file hashes may occur across compression-library versions even when decompressed CSV contents are identical.
+
+\subsection{Optional DEIS Builder}
+
+An optional script demonstrates how a separate panel can be constructed from the official DEIS Parquet resource. The script filters hospital emergency services, maps respiratory-cause labels using regular expressions, pivots causes to a site-week wide format, and selects high-volume sites. Because the official portal reported a Creative Commons non-commercial license for the source resource, the script does not mix source observations into the bundled CC BY synthetic dataset. Users who execute the builder must verify the current source schema, license, completeness, and cause labels before redistribution \citep{DEIS2026}.
+
+\section{Technical Validation}
+\label{sec:validation}
+
+\subsection{Structural and Arithmetic Validation}
+
+Automated validation executes eleven mandatory checks. All checks passed for version \datasetversion{}: the file contains exactly 1728 rows and nine sites; every site contains 192 weeks; record identifiers and site-week combinations are unique; no values are missing; all count fields are non-negative; cause counts and age counts reconcile exactly with total respiratory demand; every record is explicitly marked synthetic; and every site contains 156 training and 36 testing observations. Results are stored in \texttt{results/validation\_report.json} and \texttt{results/validation\_checks.csv}.
+
+\subsection{Seasonal Plausibility}
+
+The across-site weekly mean reaches its maximum at epidemiological week 20. Weeks 18--23 contain the six highest weekly means, demonstrating that the intended winter peak remains visible after site scaling and stochastic variation. Comparable Chilean evidence has documented seasonal concentration and potentially sharp respiratory peaks, although the present values are synthetic and must not be compared numerically with official surveillance totals \citep{ToroCastillo2024,DiazCarvajal2025}.
+
+\subsection{Correlation Structure}
+
+Pearson correlations between high respiratory infection and selected variables are 0.88 for influenza, 0.94 for bronchial crisis, 0.96 for other respiratory causes, 0.05 for identified COVID-19, and $-0.54$ for mean temperature. The resulting structure creates a realistic feature-selection challenge: several variables are strongly informative but potentially collinear, while the declining COVID-19 series has limited contemporaneous association with the principal target. Figure~\ref{fig:corr} displays the full correlation matrix for the principal variables.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/correlation_matrix.png}
+\caption{Pearson correlation structure among selected benchmark variables.}
+\label{fig:corr}
+\end{figure}
+
+\subsection{Forecasting Baselines}
+
+Baseline evaluation uses the H09 series, with the first 156 observations for training and the final 36 observations for testing. Seasonal naive prediction uses the value from 52 weeks earlier. SARIMA and SARIMAX use $(1,1,1)(1,1,0)_{52}$ specifications; SARIMAX adds influenza, identified COVID-19, mean temperature, and holiday indicators. Table~\ref{tab:baseline} reports the deterministic results generated by the supplied script.
+
+\begin{table}[H]
+\caption{Baseline performance on the H09 36-week test set. Lower RMSE, MAE, and MAPE indicate better performance.}
+\label{tab:baseline}
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Model & RMSE & MAE & MAPE (\%) & $R^2$ \\
+\midrule
+Seasonal naive (lag 52) & 79.14 & 64.25 & 8.27 & 0.9258 \\
+SARIMA$(1,1,1)(1,1,0)_{52}$ & 74.63 & 59.94 & 7.62 & 0.9340 \\
+SARIMAX + exogenous variables & 77.03 & 61.36 & 7.65 & 0.9297 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Rather than establishing a definitive ranking, the baseline confirms that the benchmark contains learnable annual dependence and provides a transparent reference for future experiments. The small difference between SARIMA and SARIMAX is intentional evidence that exogenous variables should be evaluated rather than assumed to improve every model. More complex architectures such as LSTM networks require careful tuning and adequate sample size, particularly when only 156 training weeks are available \citep{Hochreiter1997,Torres2021}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\linewidth]{figures/baseline_mape.png}
+\caption{MAPE for the three supplied forecasting baselines.}
+\label{fig:mape}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/reference_forecasts.png}
+\caption{Observed synthetic H09 demand and out-of-sample baseline forecasts for weeks 1--36 of 2025.}
+\label{fig:forecasts}
+\end{figure}
+
+\subsection{Reproducibility and FAIR Alignment}
+
+FAIR alignment is supported through findable metadata, stable filenames, a citation file, machine-readable JSON, interoperable CSV formats, explicit licenses, reuse notes, checksums, and executable scripts \citep{Wilkinson2016}. GitHub supplies transparent version control and issue tracking, while Zenodo archiving should be used to assign a persistent DOI to each public release. Recent data descriptors have similarly combined repository hosting with archived releases, checksums, technical validation, and detailed user notes \citep{Voinea2026,Dou2026,ArevaloHerrera2026}.
+
+\section{User Notes}
+\label{sec:user-notes}
+
+\subsection{Loading the Dataset}
+
+The main CSV can be loaded in Python with:
+
+\begin{lstlisting}[language=Python]
+import pandas as pd
+panel = pd.read_csv(
+    "data/chile_ed_resp_weekly_panel.csv",
+    parse_dates=["week_start"]
+)
+print(panel.shape)  # (1728, 31)
+\end{lstlisting}
+
+In R, the equivalent operation is:
+
+\begin{lstlisting}[language=R]
+library(readr)
+panel <- read_csv("data/chile_ed_resp_weekly_panel.csv")
+dim(panel)  # 1728 x 31
+\end{lstlisting}
+
+\subsection{Recommended Evaluation Protocol}
+
+Chronological evaluation should respect the supplied \texttt{recommended\_split} field. Random row-wise train/test splitting is discouraged because it leaks future seasonal information and allows observations from the same weeks and related sites to appear in both sets. Model selection can use rolling-origin validation within the 156-week training period. Cross-site experiments should additionally report whether site identifiers or site profiles are used as predictors.
+
+\subsection{Appropriate Uses}
+
+Appropriate uses include forecasting-method comparisons, teaching, pipeline testing, feature engineering, software validation, dashboard prototypes, reproducibility studies, and simulation-based sensitivity analysis. Users may introduce controlled missingness, reporting delays, or structural breaks in derived copies, provided that modifications are documented and the original synthetic status remains visible.
+
+\subsection{Inappropriate Uses}
+
+Clinical, epidemiological, policy, staffing, procurement, or hospital-capacity decisions must not be based on the benchmark. Values must not be attributed to actual Chilean hospitals, regions, services, or patient groups. The benchmark cannot estimate disease incidence, evaluate real institutional performance, infer health inequities, or support claims about actual resource shortages. The synthetic region groups are design parameters and do not correspond to official administrative boundaries.
+
+\subsection{Versioning and Citation}
+
+Every public release should use semantic versioning. Git tags and GitHub releases should match the dataset version, for example \texttt{v1.0.0}. After Zenodo integration, the concept DOI and version DOI should be added to \path{README.md}, \texttt{CITATION.cff}, \texttt{metadata.json}, and the \texttt{\textbackslash dataset} field of this manuscript. Detailed Spanish-language steps are included in \texttt{docs/GITHUB\_UPLOAD\_GUIDE\_ES.md}.
+
+\section{Limitations}
+\label{sec:limitations}
+
+Several limitations define the appropriate interpretation of the resource. First, all observations are synthetic; seasonal shapes, correlations, ranges, and site heterogeneity are design outputs rather than empirical estimates. Second, weekly granularity cannot reproduce intra-week arrival patterns, hourly crowding, triage acuity, bed occupancy, staff availability, or patient-flow bottlenecks. Third, site profiles are controlled abstractions and do not represent the full diversity of Chile's health network. Fourth, weather values are synthetic proxies and do not correspond to specific meteorological stations. Fifth, the clean release contains no missing values or reporting revisions, so robustness to administrative data problems must be tested on user-modified copies or real sources. Sixth, baseline performance may appear high because annual seasonality is intentionally strong and the generating process is stationary enough for seasonal models. Finally, the optional DEIS builder depends on an external schema and URL that may change; users must inspect current official documentation before execution.
+
+Despite these constraints, the benchmark fills a methodological role that real operational data cannot always provide: every observation can be regenerated, every transformation can be inspected, and every modeling result can be reproduced without access restrictions. Synthetic-to-real generalization remains an open empirical question, as demonstrated by recent synthetic benchmark research where performance on controlled data did not transfer directly to real archival material \citep{Dauletov2026}.
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+The \datasetname{} provides a deterministic 1728-row weekly panel for respiratory emergency-demand forecasting across nine synthetic Chilean hospital profiles. Its release combines a documented generation process, complete data dictionary, validation suite, baseline models, checksums, metadata, figures, licenses, and repository-publication instructions. Technical validation confirms temporal completeness, arithmetic integrity, intended seasonal behavior, controlled correlations, and a reproducible forecasting partition. By separating a synthetic CC BY benchmark from an optional real-source builder, the package supports open experimentation without implying that synthetic observations describe actual institutions or patients. A versioned GitHub release archived in Zenodo will make the dataset citable and suitable for submission as a Data Descriptor after the repository placeholders and DOI are replaced.
+
+\authorcontributions{Conceptualization, J.F.-B., B.S.-N. and C.A.-L.; methodology, J.F.-B. and B.S.-N.; software, J.F.-B. and B.S.-N.; validation, J.F.-B., B.S.-N. and C.A.-L.; formal analysis, J.F.-B. and B.S.-N.; data curation, J.F.-B. and B.S.-N.; writing---original draft preparation, J.F.-B. and B.S.-N.; writing---review and editing, C.A.-L.; visualization, J.F.-B. and B.S.-N.; supervision, C.A.-L. All authors have read and agreed to the published version of the manuscript.}
+\funding{This research received no external funding.}
+\institutionalreview{Not applicable. The released benchmark is fully synthetic and contains no observations from human participants, patients, or identifiable institutions.}
+\informedconsent{Not applicable.}
+\dataavailability{Version \datasetversion{} of the \datasetname{} is included in the accompanying repository package. Before submission, the authors must upload the repository to \url{\dataseturl}, create a versioned release, archive it in Zenodo, and replace the placeholder DOI \url{\datasetdoi}. The official DEIS source referenced by the optional real-data builder is available from the Chilean Open Data Portal \citep{DEIS2026}; no real DEIS observations are included in the bundled synthetic benchmark.}
+\acknowledgments{The authors acknowledge the Department of Health Statistics and Information of the Chilean Ministry of Health for maintaining public documentation and open respiratory-emergency resources that informed the variable schema.}
+\conflictsofinterest{The authors declare no conflicts of interest.}
+
+\abbreviations{The following abbreviations are used in this manuscript:\\
+\noindent
+\begin{tabular}{@{}ll}
+CC BY & Creative Commons Attribution \\
+CSV & Comma-separated values \\
+DEIS & Department of Health Statistics and Information, Chile \\
+ED & Emergency department \\
+FAIR & Findable, Accessible, Interoperable, Reusable \\
+MAE & Mean absolute error \\
+MAPE & Mean absolute percentage error \\
+RMSE & Root mean squared error \\
+SARIMA & Seasonal autoregressive integrated moving average \\
+SARIMAX & Seasonal autoregressive integrated moving average with exogenous variables \\
+\end{tabular}}
+
+\end{paracol}
+
+\reftitle{References}
+\externalbibliography{yes}
+\bibliography{references}
+
+\end{document}
