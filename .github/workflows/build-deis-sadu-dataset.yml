@@ -1,0 +1,46 @@
+name: Build DEIS-SADU dataset
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+
+      - name: Unit tests
+        run: pytest -q
+
+      - name: Download official DEIS/SADU source and build release
+        run: python scripts/make_release.py --start-year 2022 --end-year 2025 --force-download
+
+      - name: Show validation report
+        run: cat results/validation_report.json && echo && cat results/validation_checks.csv
+
+      - name: Commit curated DEIS/SADU release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ metadata/ results/
+          if git diff --cached --quiet; then
+            echo "No release changes to commit."
+          else
+            git commit -m "Build curated DEIS/SADU release"
+            git push
+          fi

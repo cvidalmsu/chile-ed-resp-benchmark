@@ -1,87 +1,96 @@
-# Chile-ED-Resp Benchmark
+# Chile-ED-Resp
 
-**Version:** 1.0.0  
-**Status:** Complete synthetic dataset package prepared for a *Data* (MDPI) Data Descriptor submission.
+**A curated and reproducible weekly hospital dataset for respiratory emergency-demand forecasting in Chile**
 
-Chile-ED-Resp is a deterministic synthetic weekly panel for respiratory emergency-demand forecasting. It contains 1,728 hospital-week records: nine artificial hospital profiles, each observed for 192 epidemiological weeks from 2022-W01 through 2025-W36.
+Repository: https://github.com/cvidalmsu/chile-ed-resp-benchmark
 
-> **Important:** Every observation is synthetic. The files do not report real hospital or patient activity and must not be used for clinical, epidemiological, staffing, procurement, or policy decisions.
+## Purpose
+
+Chile-ED-Resp provides a reproducible curation pipeline and analysis-ready release derived from **official DEIS/SADU weekly respiratory emergency records**. Official count fields are preserved; the forecasting artifact adds only deterministic features computed from prior observations and calendar position.
+
+## Official source
+
+- Publisher: Ministerio de Salud de Chile / Departamento de Estadísticas e Información de Salud (DEIS)
+- System: Sistema de Atención Diaria de Urgencias (SADU)
+- Dataset: *Atenciones de urgencias de causas respiratorias por semana epidemiológica*
+- Resource ID: `ae6c9887-106d-4e98-8875-40bf2b836041`
+- Official resource: https://datos.gob.cl/dataset/atenciones-de-urgencia-causas-respiratorias
+- Source license linked by the portal: CC BY-NC 2.0
+
+## Release scope
+
+The curated release uses the closed period **2022-2025** and keeps official records for:
+
+- establishments classified as `Hospital`;
+- hospital emergency units (`Urgencia Hospitalaria (UEH)`);
+- all respiratory consultation and hospitalization causes available in the source;
+- total counts and the five official age strata.
+
+The forecasting artifact pivots selected consultation causes into one row per hospital-week and adds only deterministic features: target lags, prior rolling means, seasonal sine/cosine encoding, coverage diagnostics, and a chronological train/test flag (2022-2024 / 2025).
 
 ## Repository structure
 
 ```text
 .
-├── main.tex
-├── references.bib
+├── main.tex                         # Data (MDPI) Data Descriptor
+├── main.pdf                         # verified compiled manuscript
 ├── cover_letter.tex
-├── Definitions/                 # MDPI LaTeX class and assets
-├── data/
-│   ├── chile_ed_resp_weekly_panel.csv
-│   ├── chile_ed_resp_weekly_panel.csv.gz
-│   ├── reference_hospital_features.csv
-│   ├── metadata.json
-│   └── SHA256SUMS.txt
-├── docs/
+├── cover_letter.pdf                 # verified one-page cover letter
+├── references.bib
+├── Definitions/                     # MDPI LaTeX class/assets
+├── data/                            # curated DEIS/SADU release (after workflow)
+├── raw/README.md                    # raw official file is not committed
+├── metadata/
 │   ├── data_dictionary.csv
-│   ├── DATA_DICTIONARY.md
-│   └── GITHUB_UPLOAD_GUIDE_ES.md
+│   ├── source_manifest.json         # generated
+│   ├── release_metadata.json        # generated
+│   ├── causes.csv                   # populated by the pipeline
+│   ├── hospital_coverage.csv        # populated by the pipeline
+│   └── SHA256SUMS.txt               # populated by the pipeline
+├── results/                         # validation and optional baseline outputs
 ├── scripts/
-│   ├── generate_dataset.py
+│   ├── download_deis.py
+│   ├── build_dataset.py
 │   ├── validate_dataset.py
-│   ├── baseline_forecasting.py
-│   ├── reproduce_figures.py
-│   └── build_real_deis_panel.py
-├── results/
-├── figures/
-├── CITATION.cff
-├── LICENSE-DATA
-├── LICENSE-CODE
-├── requirements.txt
-└── .zenodo.json
+│   ├── baseline_example.py
+│   ├── make_release.py
+│   └── update_doi.py
+├── tests/
+├── docs/
+└── .github/workflows/build-deis-sadu-dataset.yml
 ```
 
-## Quick reproduction
+## Local build
 
 ```bash
 python -m venv .venv
-# Windows PowerShell: .venv\Scripts\Activate.ps1
 # Linux/macOS: source .venv/bin/activate
-python -m pip install -r requirements.txt
-python scripts/generate_dataset.py --output-dir data
-python scripts/validate_dataset.py --input data/chile_ed_resp_weekly_panel.csv --output-dir results
-python scripts/baseline_forecasting.py --input data/chile_ed_resp_weekly_panel.csv --output-dir results
-python scripts/reproduce_figures.py --data data/chile_ed_resp_weekly_panel.csv --metrics results/baseline_metrics.csv --predictions results/baseline_predictions.csv --output-dir figures
+# Windows PowerShell: .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+pytest -q
+python scripts/make_release.py --start-year 2022 --end-year 2025 --force-download
 ```
 
-## Compile the manuscript
+## GitHub build
 
-```bash
-pdflatex main.tex
-bibtex main
-pdflatex main.tex
-pdflatex main.tex
-```
+Use **Actions -> Build DEIS-SADU dataset -> Run workflow**. The workflow downloads the official source, builds the curated release, validates it, and commits `data/`, `metadata/`, and `results/` back to `main`.
 
-## Dataset files
+## Data integrity principles
 
-- `chile_ed_resp_weekly_panel.csv`: main 1,728-row panel.
-- `reference_hospital_features.csv`: H09 features with lags and rolling means.
-- `metadata.json`: machine-readable release metadata.
-- `SHA256SUMS.txt`: integrity hashes.
+- All released count observations originate in the official DEIS/SADU source.
+- No stochastic augmentation.
+- No imputation of official count fields.
+- No smoothing or interpolation of official count fields.
+- Source row values are retained in the long artifact.
+- Derived forecasting features are explicitly labeled and reproducible.
+- SHA-256 checksum and retrieval timestamp are recorded for the source snapshot.
 
-## Licenses
+## License
 
-- Dataset and documentation: CC BY 4.0.
-- Code: MIT License.
-- The optional `build_real_deis_panel.py` script downloads an external official source. Any output generated from that source inherits the source portal's current licensing terms and is not part of the bundled synthetic dataset.
+- Curated data: **CC BY-NC 2.0**, following the CC BY-NC 2.0 license linked by the official source.
+- Code: MIT.
+- Original DEIS/SADU records remain attributable to the Chilean Ministry of Health/DEIS and are not relicensed by the authors.
 
-## Before journal submission
+## DOI
 
-1. Replace `REPLACE-WITH-USERNAME` in `main.tex`, `CITATION.cff`, `.zenodo.json`, and this README.
-2. Upload the repository to GitHub.
-3. Create release `v1.0.0`.
-4. Archive the release in Zenodo and obtain a DOI.
-5. Replace the placeholder DOI in all metadata files and recompile the manuscript.
-6. Verify that the repository and Zenodo record are public before submitting to *Data*.
-
-Detailed instructions are available in `docs/GITHUB_UPLOAD_GUIDE_ES.md`.
+Zenodo DOI after the first public release: `10.5281/zenodo.REPLACE_AFTER_RELEASE`.

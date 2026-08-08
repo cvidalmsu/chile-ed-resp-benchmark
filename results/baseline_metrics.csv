@@ -1,4 +1,0 @@
-model,rmse,mae,mape_percent,r2
-Seasonal naive (lag 52),79.14,64.25,8.27,0.9258
-"SARIMA(1,1,1)(1,1,0)[52]",74.63,59.94,7.62,0.934
-SARIMAX + exogenous,77.03,61.36,7.65,0.9297

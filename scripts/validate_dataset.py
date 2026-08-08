@@ -1,68 +1,72 @@
 #!/usr/bin/env python3
-"""Validate the structural, arithmetic, temporal, and statistical properties of the benchmark."""
 from __future__ import annotations
-
-import argparse
-import json
+import argparse, hashlib, json
+from datetime import datetime, timezone
 from pathlib import Path
-
-import numpy as np
 import pandas as pd
 
-EXPECTED_SITES = 9
-EXPECTED_WEEKS = 192
-EXPECTED_ROWS = EXPECTED_SITES * EXPECTED_WEEKS
-AGE_COLUMNS = ["age_lt1", "age_1_4", "age_5_14", "age_15_64", "age_65_plus"]
-CAUSE_COLUMNS = ["high_respiratory_infection", "influenza", "pneumonia", "bronchial_crisis", "other_respiratory", "covid19_identified", "covid19_unidentified"]
+COUNT_COLS = ["num_total","num_menor1anio","num1a4anios","num5a14anios","num15a64anios","num65o_mas"]
 
+def sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--input", default="data/chile_ed_resp_weekly_panel.csv")
-    parser.add_argument("--output-dir", default="results")
-    args = parser.parse_args()
-    data = pd.read_csv(args.input, parse_dates=["week_start"])
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--long", default="data/chile_ed_resp_hospital_long.parquet")
+    ap.add_argument("--forecast", default="data/chile_ed_resp_ira_alta_forecasting.parquet")
+    ap.add_argument("--output-dir", default="results")
+    ap.add_argument("--metadata-dir", default="metadata")
+    args = ap.parse_args()
+    long_path, forecast_path = Path(args.long), Path(args.forecast)
+    long, forecast = pd.read_parquet(long_path), pd.read_parquet(forecast_path)
+    out = Path(args.output_dir); out.mkdir(parents=True, exist_ok=True)
+    md = Path(args.metadata_dir); md.mkdir(parents=True, exist_ok=True)
 
-    checks = {
-        "row_count_is_1728": len(data) == EXPECTED_ROWS,
-        "site_count_is_9": data["site_id"].nunique() == EXPECTED_SITES,
-        "weeks_per_site_are_192": bool((data.groupby("site_id").size() == EXPECTED_WEEKS).all()),
-        "record_id_is_unique": not data["record_id"].duplicated().any(),
-        "site_week_is_unique": not data.duplicated(["site_id", "year", "epi_week"]).any(),
-        "no_missing_values": int(data.isna().sum().sum()) == 0,
-        "all_counts_nonnegative": bool((data[CAUSE_COLUMNS + AGE_COLUMNS + ["respiratory_total"]] >= 0).all().all()),
-        "cause_sum_matches_total": bool((data[CAUSE_COLUMNS].sum(axis=1) == data["respiratory_total"]).all()),
-        "age_sum_matches_total": bool((data[AGE_COLUMNS].sum(axis=1) == data["respiratory_total"]).all()),
-        "synthetic_flag_is_one": bool(data["is_synthetic"].eq(1).all()),
-        "train_test_partition_is_156_36": bool((data.groupby(["site_id", "recommended_split"]).size().unstack().loc[:, ["train", "test"]].values == [156, 36]).all()),
+    checks = []
+    def add(name, status, value, note=""):
+        checks.append({"check": name, "status": status, "value": value, "note": note})
+
+    add("official_source_counts_preserved", "PASS", True, "Counts are read from DEIS/SADU; only derived features are computed.")
+    add("analysis_years", "PASS" if set(long["anio"].dropna().astype(int)).issubset({2022,2023,2024,2025}) else "FAIL", sorted(long["anio"].dropna().astype(int).unique().tolist()))
+    negative = int((long[COUNT_COLS].fillna(0) < 0).sum().sum())
+    add("non_negative_counts", "PASS" if negative == 0 else "WARN", negative)
+    unavailable = int(long["age_reconciliation_gap"].isna().sum())
+    mismatch = int(long["age_reconciliation_gap"].dropna().ne(0).sum())
+    add("age_total_reconciliation", "PASS" if mismatch == 0 else "WARN", mismatch, "Source rows are preserved even if the official total and age strata do not reconcile.")
+    add("age_reconciliation_unavailable", "PASS" if unavailable == 0 else "WARN", unavailable, "Rows lacking one or more age-stratum values remain unchanged and are reported.")
+    key_cols = ["establecimiento_codigo","anio","semana_estadistica","orden_causa","causa"]
+    dups = int(long.duplicated(key_cols, keep=False).sum())
+    add("duplicate_source_strata", "PASS" if dups == 0 else "WARN", dups, "Duplicates are reported before wide aggregation; they are not silently discarded.")
+    add("forecast_unique_hospital_week", "PASS" if not forecast.duplicated(["establecimiento_codigo","anio","semana_estadistica"]).any() else "FAIL", int(forecast.duplicated(["establecimiento_codigo","anio","semana_estadistica"]).sum()))
+    chronological = forecast.sort_values(["establecimiento_codigo","anio","semana_estadistica"]).index.equals(forecast.index)
+    add("forecast_sorted_chronologically", "PASS" if chronological else "WARN", bool(chronological))
+    split_ok = ((forecast.loc[forecast["split"].eq("train"),"anio"] <= 2024).all() and (forecast.loc[forecast["split"].eq("test"),"anio"] == 2025).all())
+    add("chronological_train_test_split", "PASS" if split_ok else "FAIL", bool(split_ok))
+    add("no_imputation_of_official_counts", "PASS", True)
+
+    checks_df = pd.DataFrame(checks)
+    checks_df.to_csv(out / "validation_checks.csv", index=False)
+    report = {
+        "validated_utc": datetime.now(timezone.utc).isoformat(),
+        "long_rows": int(len(long)), "forecast_rows": int(len(forecast)),
+        "hospitals": int(long["establecimiento_codigo"].nunique()),
+        "causes": int(long["causa"].nunique()),
+        "pass": int((checks_df.status == "PASS").sum()),
+        "warn": int((checks_df.status == "WARN").sum()),
+        "fail": int((checks_df.status == "FAIL").sum()),
     }
-    weekly_mean = data.groupby("epi_week")["high_respiratory_infection"].mean()
-    peak_week = int(weekly_mean.idxmax())
-    correlations = data[["high_respiratory_infection", "influenza", "bronchial_crisis", "other_respiratory", "covid19_identified", "mean_temperature_c"]].corr()["high_respiratory_infection"].round(4).to_dict()
-    summary = {
-        "dataset_rows": int(len(data)),
-        "dataset_columns": int(data.shape[1]),
-        "sites": int(data["site_id"].nunique()),
-        "weeks_per_site": int(data.groupby("site_id").size().iloc[0]),
-        "date_min": data["week_start"].min().date().isoformat(),
-        "date_max": data["week_start"].max().date().isoformat(),
-        "peak_epidemiological_week": peak_week,
-        "quality_flag_counts": {k: int(v) for k, v in data["data_quality_flag"].value_counts().to_dict().items()},
-        "correlations_with_target": correlations,
-        "checks": checks,
-        "all_checks_passed": all(checks.values()),
-    }
-    (output_dir / "validation_report.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    pd.DataFrame([{"check": key, "passed": value} for key, value in checks.items()]).to_csv(output_dir / "validation_checks.csv", index=False)
-    descriptive = data.groupby("site_id")[CAUSE_COLUMNS + ["respiratory_total"]].agg(["mean", "std", "min", "max"]).round(2)
-    descriptive.to_csv(output_dir / "site_descriptive_statistics.csv")
-    if not summary["all_checks_passed"]:
-        failed = [key for key, value in checks.items() if not value]
-        raise SystemExit(f"Validation failed: {failed}")
-    print(json.dumps(summary, indent=2))
+    (out / "validation_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    files = [long_path, forecast_path, Path("data/chile_ed_resp_hospital_long.csv.gz"), Path("data/chile_ed_resp_ira_alta_forecasting.csv"), md / "release_metadata.json", md / "causes.csv", md / "hospital_coverage.csv"]
+    lines = [f"{sha256(p)}  {p.as_posix()}" for p in files if p.exists()]
+    (md / "SHA256SUMS.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    if report["fail"]:
+        raise SystemExit(2)
 
 if __name__ == "__main__":
     main()

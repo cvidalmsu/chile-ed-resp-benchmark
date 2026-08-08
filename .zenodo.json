@@ -1,15 +1,20 @@
 {
-  "title": "Chile-ED-Resp Benchmark: A Reproducible Synthetic Weekly Dataset for Respiratory Emergency-Demand Forecasting",
+  "title": "Chile-ED-Resp: A Curated and Reproducible Weekly Hospital Dataset for Respiratory Emergency-Demand Forecasting in Chile",
   "upload_type": "dataset",
-  "description": "Deterministic synthetic weekly benchmark with nine hospital profiles and 192 epidemiological weeks per site. All observations are synthetic and are not suitable for clinical or operational decision making.",
+  "description": "Curated, analysis-ready secondary dataset derived from official DEIS/SADU weekly respiratory emergency records for Chilean hospital emergency units, 2022-2025. All released count observations are derived from official DEIS/SADU records.",
   "creators": [
-    {"name": "Fernandez-Bastias, Jorge"},
+    {"name": "Balcázar-Quimi, Wilman"},
+    {"name": "Angulo, Carla"},
+    {"name": "Cornejo-Gaete, Cristian"},
     {"name": "Salinas-Neira, Brandon"},
-    {"name": "Angulo-Larenas, Carla", "orcid": "0000-0003-3190-542X"}
+    {"name": "Fernández-Bastías, Jorge"},
+    {"name": "Tupac-Yupanqui, Miguel"},
+    {"name": "Vidal-Silva, Cristian"}
   ],
-  "license": "cc-by-4.0",
-  "keywords": ["synthetic data", "hospital demand", "emergency department", "respiratory illness", "forecasting", "Chile"],
+  "license": "cc-by-nc-2.0",
+  "keywords": ["Chile", "DEIS", "SADU", "emergency department", "respiratory disease", "forecasting", "time series", "open government data"],
   "related_identifiers": [
-    {"identifier": "https://github.com/REPLACE-WITH-USERNAME/chile-ed-resp-benchmark", "relation": "isSupplementTo", "scheme": "url"}
+    {"identifier": "https://github.com/cvidalmsu/chile-ed-resp-benchmark", "relation": "isSupplementTo", "scheme": "url"},
+    {"identifier": "https://datos.gob.cl/dataset/atenciones-de-urgencia-causas-respiratorias", "relation": "isDerivedFrom", "scheme": "url"}
   ]
 }

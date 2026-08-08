@@ -1,0 +1,51 @@
+field,artifact,type,unit,origin,description
+establecimiento_codigo,long|string|forecast,string,,DEIS/SADU,Official establishment code
+establecimiento_glosa,long|forecast,string,,DEIS/SADU,Official establishment name
+region_codigo,long|forecast,string,,DEIS/SADU,Official region code
+region_glosa,long|forecast,string,,DEIS/SADU,Official region name
+comuna_codigo,long|forecast,string,,DEIS/SADU,Official municipality code
+comuna_glosa,long|forecast,string,,DEIS/SADU,Official municipality name
+servicio_salud_codigo,long|forecast,string,,DEIS/SADU,Official health service code
+servicio_salud_glosa,long|forecast,string,,DEIS/SADU,Official health service name
+tipo_establecimiento,long,string,,DEIS/SADU,Type of health establishment
+dependencia_administrativa,long|forecast,string,,DEIS/SADU,Administrative dependency
+nivel_atencion,long|forecast,string,,DEIS/SADU,Level of care
+tipo_urgencia,long,string,,DEIS/SADU,Emergency-care type
+latitud,long|forecast,float,degrees,DEIS/SADU,Latitude parsed from official coordinate text
+longitud,long|forecast,float,degrees,DEIS/SADU,Longitude parsed from official coordinate text
+nivel_complejidad,long|forecast,string,,DEIS/SADU,Official complexity level
+anio,long|forecast,integer,year,DEIS/SADU,Statistical year
+semana_estadistica,long|forecast,integer,week,DEIS/SADU,Statistical/epidemiological week
+orden_causa,long,integer,,DEIS/SADU,Official cause ordering code
+causa,long,string,,DEIS/SADU,Official respiratory consultation or hospitalization cause
+num_total,long,integer,events,DEIS/SADU,Official total count for the stratum
+num_menor1anio,long,integer,events,DEIS/SADU,Official count younger than 1 year
+num1a4anios,long,integer,events,DEIS/SADU,Official count ages 1-4 years
+num5a14anios,long,integer,events,DEIS/SADU,Official count ages 5-14 years
+num15a64anios,long,integer,events,DEIS/SADU,Official count ages 15-64 years
+num65o_mas,long,integer,events,DEIS/SADU,Official count ages 65 years or older
+measure_type,long,string,,derived,Consultation vs hospitalization classification from official cause label
+age_sum,long,integer,events,derived,Sum of the five official age-stratified count fields
+age_reconciliation_gap,long,integer,events,derived,num_total minus age_sum
+epi_period,long|forecast,string,,derived,YYYY-Www label from official year and week
+source_resource_id,long,string,,derived,Fixed datos.gob.cl resource identifier
+record_id,long,string,,derived,Deterministic SHA-1-derived row key from official identifiers
+quality_flag,long,string,,derived,Age reconciliation diagnostic; source values are never altered
+ira_alta,forecast,float,events,DEIS/SADU pivot,Official IRA Alta consultation count for the hospital-week
+influenza,forecast,float,events,DEIS/SADU pivot,Official influenza consultation count for the hospital-week
+pneumonia,forecast,float,events,DEIS/SADU pivot,Official pneumonia consultation count for the hospital-week
+bronchitis_bronchiolitis,forecast,float,events,DEIS/SADU pivot,Official bronchitis/bronchiolitis consultation count
+other_respiratory,forecast,float,events,DEIS/SADU pivot,Official other-respiratory consultation count when available
+covid19_identified,forecast,float,events,DEIS/SADU pivot,Official identified COVID-19 consultation count when available
+covid19_unidentified,forecast,float,events,DEIS/SADU pivot,Official unidentified COVID-19 consultation count when available
+coverage_ratio,forecast,float,ratio,derived,Observed IRA Alta weeks divided by national target-week count
+recommended_for_benchmark,forecast,boolean,,derived,True when IRA Alta coverage is at least 95 percent
+split,forecast,string,,derived,Train for 2022-2024; test for 2025
+week_sin,forecast,float,,derived,Sine encoding of statistical week
+week_cos,forecast,float,,derived,Cosine encoding of statistical week
+ira_alta_lag_1,forecast,float,events,derived,One-week lag of IRA Alta within establishment
+ira_alta_lag_2,forecast,float,events,derived,Two-week lag of IRA Alta within establishment
+ira_alta_lag_4,forecast,float,events,derived,Four-week lag of IRA Alta within establishment
+ira_alta_lag_52,forecast,float,events,derived,Seasonal lag: IRA Alta for the same statistical week in the previous year
+ira_alta_rollmean_4,forecast,float,events,derived,Trailing 4-week mean using prior observations only
+ira_alta_rollmean_12,forecast,float,events,derived,Trailing 12-week mean using prior observations only

@@ -1,9 +1,19 @@
-Creative Commons Attribution 4.0 International
+# Data license and source attribution
 
-Copyright (c) 2026 Jorge Fernandez-Bastias, Brandon Salinas-Neira, and Carla Angulo-Larenas.
+The official source records used by this repository are published by the Chilean
+Ministry of Health / Departamento de Estadísticas e Información de Salud (DEIS)
+through datos.gob.cl under **Creative Commons Attribution-NonCommercial 2.0
+Generic (CC BY-NC 2.0)**, as linked by the official resource page.
 
-The dataset and documentation are licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+The curated tables in this repository are adaptations of those records and are
+therefore distributed under **CC BY-NC 2.0**. Attribution to the original source
+must be retained, and changes introduced by the curation pipeline must be
+identified.
 
-You are free to share and adapt the material for any purpose, provided that appropriate credit is given, a link to the license is provided, and changes are indicated.
+Official source:
+"Atenciones de urgencias de causas respiratorias por semana epidemiológica"
+Resource ID: ae6c9887-106d-4e98-8875-40bf2b836041
+Publisher: Ministerio de Salud de Chile / DEIS
 
-License text: https://creativecommons.org/licenses/by/4.0/legalcode
+The source Parquet itself is not relicensed by the authors. The software code in
+this repository is licensed separately under the MIT License.

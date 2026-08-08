@@ -1,26 +1,44 @@
-\documentclass[11pt]{letter}
-\usepackage[margin=2.5cm]{geometry}
+\documentclass[10pt]{article}
+\usepackage[margin=2.25cm]{geometry}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{xurl}
-\signature{Carla Angulo-Larenas\\Corresponding Author\\Escuela de Ciencias Digitales y Tecnolog\'ias Avanzadas\\Universidad Bernardo O'Higgins\\carla.angulo@ubo.cl}
-\address{Escuela de Ciencias Digitales y Tecnolog\'ias Avanzadas\\Universidad Bernardo O'Higgins\\Avenida Viel 1497\\Santiago 8370993, Chile}
+\usepackage{parskip}
+\setlength{\parindent}{0pt}
 \begin{document}
-\begin{letter}{Editors-in-Chief\\\textit{Data}\\MDPI}
-\opening{Dear Editors,}
+\thispagestyle{empty}
 
-Please consider our Data Descriptor entitled ``Chile-ED-Resp: A Reproducible Synthetic Weekly Benchmark Dataset for Respiratory Emergency-Demand Forecasting in Chile'' for publication in \textit{Data}.
+\begin{flushright}
+Facultad de Ingenier\'ia y Negocios\\
+Universidad de Las Am\'ericas\\
+Santiago, Chile\\[4pt]
+7 August 2026
+\end{flushright}
 
-The submission presents a deterministic, fully synthetic, and openly reusable weekly benchmark designed for transparent comparison of respiratory emergency-demand forecasting methods. The release contains 1728 site-week observations spanning nine synthetic hospital profiles and 192 epidemiological weeks per site, together with cause-specific respiratory counts, age-group totals, meteorological and calendar covariates, quality flags, a predefined chronological split, machine-readable metadata, a complete data dictionary, SHA-256 checksums, validation reports, baseline forecasts, and executable generation scripts.
+Editorial Office\\
+\textit{Data} (MDPI)
 
-The work is aligned with the journal's emphasis on transparent, reusable, and well-documented scientific data. Unlike the previously model-centered manuscript from which the data-design problem emerged, the present submission is organized as a Data Descriptor and places dataset provenance, reproducibility, technical validation, file organization, licensing, and appropriate reuse at the center of the contribution. The manuscript also cites recent Data Descriptors that informed the organization of the release package.
+\textbf{Re: Data Descriptor submission - ``Chile-ED-Resp: A Curated and Reproducible Weekly Hospital Dataset for Respiratory Emergency-Demand Forecasting in Chile''}
 
-All observations are explicitly synthetic; no patient-level, identifiable, or real hospital-activity data are included. The dataset and documentation are released under CC BY 4.0, and the code is released under the MIT License. Before formal submission, the repository will be made public on GitHub and archived in Zenodo, and the final persistent DOI will replace the placeholders currently included in the manuscript package.
+Dear Editors,
 
-The manuscript has not been published previously and is not under consideration elsewhere. All authors have approved the submission and declare no conflicts of interest.
+We are pleased to submit the above Data Descriptor for consideration in \textit{Data}. The manuscript describes a secondary research dataset and reproducible processing pipeline derived from the official Chilean Ministry of Health/DEIS resource \textit{Atenciones de urgencias de causas respiratorias por semana epidemiol\'ogica}, produced through the Sistema de Atenci\'on Diaria de Urgencias (SADU). The release covers the closed 2022--2025 period and focuses on hospital emergency units. It preserves official respiratory-demand counts and age strata while adding only deterministic provenance, quality-control, coverage, and time-series features.
 
-Thank you for your consideration.
+The contribution is aligned with the Data Descriptors section because its emphasis is reusable data infrastructure rather than the superiority of a forecasting model. The public package includes a curated long table, a hospital-week forecasting table, a machine-readable dictionary, source and release manifests, SHA-256 checksums, hospital-coverage and cause inventories, validation reports, unit tests, and a GitHub Actions workflow that rebuilds the release from the official Parquet resource.
 
-\closing{Sincerely,}
-\end{letter}
+Repository: \url{https://github.com/cvidalmsu/chile-ed-resp-benchmark}
+
+Before final journal publication, the tagged release will also be archived in Zenodo and the version-specific DOI will be inserted into the manuscript. The official portal links the source data to Creative Commons Attribution-NonCommercial 2.0 Generic (CC BY-NC 2.0); the curated data preserve that licensing condition, whereas the processing software is released under the MIT License.
+
+All authors have approved the manuscript and agree with its submission to \textit{Data}. The manuscript is not under consideration elsewhere. The dataset uses aggregate public administrative statistics and contains no patient-level or directly identifying personal information.
+
+We believe Chile-ED-Resp can provide a transparent and reusable foundation for hospital-demand forecasting, health-informatics teaching, and reproducible secondary analysis of respiratory emergency activity in Chile. Thank you for considering our submission.
+
+Sincerely,\\[10pt]
+\textbf{Cristian Vidal-Silva, Ph.D.}\\
+on behalf of all authors\\
+Corresponding author\\
+\texttt{cristian.vidal.silva@edu.udla.cl}
+
 \end{document}

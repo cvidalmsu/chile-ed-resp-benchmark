@@ -1,12 +1,14 @@
 .venv/
 __pycache__/
+.pytest_cache/
 *.pyc
 *.aux
 *.bbl
 *.blg
-*.fdb_latexmk
-*.fls
 *.log
 *.out
-*.synctex.gz
 *.toc
+raw/*.parquet
+raw/*.xlsx
+!raw/README.md
+.DS_Store
