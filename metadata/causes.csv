@@ -1,0 +1,13 @@
+orden_causa,causa,measure_type,rows,total_reported
+3,TOTAL CAUSA SISTEMA  RESPIRATORIO (J00-J98),consultation,37487,5273905
+4,IRA Alta (J00-J06),consultation,37487,2872473
+5,Influenza (J09-J11),consultation,37487,152923
+6,Neumonía (J12-J18),consultation,37487,467096
+7,Bronquitis/bronquiolitis aguda (J20-J21),consultation,37487,844677
+8,Crisis obstructiva bronquial (J40-J46),consultation,37487,337763
+9,"Otra causa respiratoria no contenidas en las categorías anteriores (J22; J30-J39, J47, J60-J98)",consultation,37487,598973
+10,TOTAL ATENCIONES POR COVID-19  Virus no Identificado U07.2,consultation,37487,496211
+11,"TOTAL ATENCIONES POR COVID-19, Virus Identificado U07.1",consultation,37487,175341
+33,- Causas sistema respiratorio (J00-J98),consultation,37487,334224
+34,"- Por covid-19, virus no identificado U07.2",consultation,37487,19319
+35,"- Por covid-19, virus identificado U07.1",consultation,37487,11458

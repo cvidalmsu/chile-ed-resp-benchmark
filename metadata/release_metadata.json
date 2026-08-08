@@ -1,0 +1,31 @@
+{
+  "dataset_title": "Chile-ED-Resp: Curated weekly hospital respiratory emergency-demand data for Chile",
+  "version": "1.0.0",
+  "source": "DEIS/SADU official open-data Parquet",
+  "source_resource_id": "ae6c9887-106d-4e98-8875-40bf2b836041",
+  "analysis_period": [
+    2022,
+    2025
+  ],
+  "created_utc": "2026-08-08T11:55:03.940426+00:00",
+  "source_schema_columns": 25,
+  "long_rows": 449844,
+  "long_columns": 32,
+  "forecast_rows": 37620,
+  "forecast_columns": 35,
+  "hospitals_long": 180,
+  "hospitals_forecast": 180,
+  "benchmark_recommended_hospitals": 178,
+  "years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "causes": 12,
+  "license": "CC BY-NC 2.0 (derived data; source portal links Creative Commons Attribution-NonCommercial 2.0)",
+  "imputation": "None",
+  "smoothing": "None",
+  "official_count_observations_preserved": true,
+  "notes": "All count variables in the curated long table are retained from the official source. Forecasting features are deterministic derivatives only."
+}

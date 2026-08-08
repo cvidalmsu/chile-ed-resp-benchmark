@@ -1,0 +1,11 @@
+check,status,value,note
+official_source_counts_preserved,PASS,True,Counts are read from DEIS/SADU; only derived features are computed.
+analysis_years,PASS,"[2022, 2023, 2024, 2025]",
+non_negative_counts,PASS,0,
+age_total_reconciliation,PASS,0,Source rows are preserved even if the official total and age strata do not reconcile.
+age_reconciliation_unavailable,PASS,0,Rows lacking one or more age-stratum values remain unchanged and are reported.
+duplicate_source_strata,PASS,0,Duplicates are reported before wide aggregation; they are not silently discarded.
+forecast_unique_hospital_week,PASS,0,
+forecast_sorted_chronologically,PASS,True,
+chronological_train_test_split,PASS,True,
+no_imputation_of_official_counts,PASS,True,

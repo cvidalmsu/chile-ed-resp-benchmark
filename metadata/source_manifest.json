@@ -1,0 +1,13 @@
+{
+  "source_dataset_title": "Atenciones de urgencias de causas respiratorias por semana epidemiológica",
+  "publisher": "Ministerio de Salud de Chile / DEIS",
+  "source_system": "Sistema de Atención Diaria de Urgencias (SADU)",
+  "dataset_id": "606ef5bb-11d1-475b-b69f-b980da5757f4",
+  "resource_id": "ae6c9887-106d-4e98-8875-40bf2b836041",
+  "source_url": "https://datos.gob.cl/dataset/606ef5bb-11d1-475b-b69f-b980da5757f4/resource/ae6c9887-106d-4e98-8875-40bf2b836041/download/at_urg_respiratorio_semanal.parquet",
+  "retrieved_utc": "2026-08-08T11:54:39.305012+00:00",
+  "source_file": "at_urg_respiratorio_semanal.parquet",
+  "source_bytes": 67501930,
+  "source_sha256": "7c37e301da5bdde35340cef320d830f60f0f92513cf47a22e53c88fb37a7fb04",
+  "source_license": "Creative Commons Non-Commercial (CC BY-NC 2.0 as linked by datos.gob.cl)"
+}

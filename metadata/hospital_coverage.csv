@@ -1,0 +1,181 @@
+establecimiento_codigo,observed_target_weeks,coverage_ratio,recommended_for_benchmark,establecimiento_glosa,region_glosa,servicio_salud_glosa
+101100,209,1.0,True,Hospital Regional Dr. Juan Noé Crevani (Arica),Región De Arica Parinacota,Servicio de Salud Arica y Parinacota
+102100,209,1.0,True,Hospital Dr. Ernesto Torres Galdames (Iquique),Región De Tarapacá,Servicio de Salud Tarapacá
+103100,209,1.0,True,Hospital Dr. Leonardo Guzmán (Antofagasta),Región De Antofagasta,Servicio de Salud Antofagasta
+103101,209,1.0,True,Hospital Dr. Carlos Cisternas (Calama),Región De Antofagasta,Servicio de Salud Antofagasta
+103102,209,1.0,True,Hospital Dr. Marcos Macuada (Tocopilla),Región De Antofagasta,Servicio de Salud Antofagasta
+103103,209,1.0,True,Hospital 21 de Mayo (Taltal),Región De Antofagasta,Servicio de Salud Antofagasta
+103104,209,1.0,True,Hospital de Mejillones,Región De Antofagasta,Servicio de Salud Antofagasta
+104100,209,1.0,True,Hospital San José del Carmen (Copiapó),Región De Atacama,Servicio de Salud Atacama
+104101,209,1.0,True,Hospital Dr. Jerónimo Méndez Arancibia (Chañaral),Región De Atacama,Servicio de Salud Atacama
+104102,209,1.0,True,Hospital Dr. Florencio Vargas (Diego de Almagro),Región De Atacama,Servicio de Salud Atacama
+104103,209,1.0,True,Hospital Provincial del Huasco Monseñor Fernando Ariztía Ruiz (Vallenar),Región De Atacama,Servicio de Salud Atacama
+104104,209,1.0,True,Hospital Dr. Manuel Magalhaes Medling (Huasco),Región De Atacama,Servicio de Salud Atacama
+105100,209,1.0,True,Hospital San Juan de Dios (La Serena),Región De Coquimbo,Servicio de Salud Coquimbo
+105101,209,1.0,True,Hospital San Pablo (Coquimbo),Región De Coquimbo,Servicio de Salud Coquimbo
+105102,209,1.0,True,Hospital Dr. Antonio Tirado Lanas de Ovalle,Región De Coquimbo,Servicio de Salud Coquimbo
+105103,209,1.0,True,Hospital Dr. Humberto Elorza Cortés (Illapel),Región De Coquimbo,Servicio de Salud Coquimbo
+105104,209,1.0,True,Hospital de Salamanca,Región De Coquimbo,Servicio de Salud Coquimbo
+105105,209,1.0,True,Hospital San Juan de Dios (Combarbalá),Región De Coquimbo,Servicio de Salud Coquimbo
+105106,209,1.0,True,Hospital Dr. José Arraño (Andacollo),Región De Coquimbo,Servicio de Salud Coquimbo
+105108,209,1.0,True,Hospital San Pedro (Los Vilos),Región De Coquimbo,Servicio de Salud Coquimbo
+106100,209,1.0,True,Hospital Carlos Van Buren (Valparaíso),Región De Valparaíso,Servicio de Salud Valparaíso San Antonio
+106103,209,1.0,True,Hospital Claudio Vicuña ( San Antonio),Región De Valparaíso,Servicio de Salud Valparaíso San Antonio
+106105,209,1.0,True,Hospital San José (Casablanca),Región De Valparaíso,Servicio de Salud Valparaíso San Antonio
+107100,209,1.0,True,Hospital Dr. Gustavo Fricke (Viña del Mar),Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+107101,209,1.0,True,Hospital San Martín (Quillota),Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+107103,209,1.0,True,Hospital Dr. Mario Sánchez Vergara (La Calera),Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+107104,209,1.0,True,Hospital Santo Tomás (Limache),Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+107105,209,1.0,True,Hospital San Agustín (La Ligua),Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+107106,209,1.0,True,Hospital Dr. Víctor Hugo Moll (Cabildo),Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+107107,209,1.0,True,Hospital de Petorca,Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+107108,209,1.0,True,Hospital Adriana Cousiño (Quintero),Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+107109,209,1.0,True,"Hospital Juana Ross de Edwards (Peñablanca, Villa Alemana)",Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+108100,209,1.0,True,Hospital San Camilo de San Felipe,Región De Valparaíso,Servicio de Salud Aconcagua
+108101,209,1.0,True,Hospital San Juan de Dios (Los Andes),Región De Valparaíso,Servicio de Salud Aconcagua
+108102,209,1.0,True,Hospital San Francisco (Llaillay),Región De Valparaíso,Servicio de Salud Aconcagua
+108104,209,1.0,True,Hospital San Antonio (Putaendo),Región De Valparaíso,Servicio de Salud Aconcagua
+108105,209,1.0,True,Hospital Psiquiátrico Dr. Philippe Pinel (Putaendo),Región De Valparaíso,Servicio de Salud Aconcagua
+109100,209,1.0,True,"Complejo Hospitalario San José (Santiago, Independencia)",Región Metropolitana de Santiago,Servicio de Salud Metropolitano Norte
+109101,209,1.0,True,"Hospital Clínico de Niños Dr. Roberto del Río (Santiago, Independencia)",Región Metropolitana de Santiago,Servicio de Salud Metropolitano Norte
+109104,209,1.0,True,Hospital de Til Til,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Norte
+110100,209,1.0,True,"Hospital San Juan de Dios (Santiago, Santiago)",Región Metropolitana de Santiago,Servicio de Salud Metropolitano Occidente
+110120,209,1.0,True,Hospital  Félix Bulnes Cerda,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Occidente
+110130,209,1.0,True,Hospital Adalberto Steeger (Talagante),Región Metropolitana de Santiago,Servicio de Salud Metropolitano Occidente
+110140,209,1.0,True,Hospital de Peñaflor,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Occidente
+110150,209,1.0,True,Hospital San José (Melipilla),Región Metropolitana de Santiago,Servicio de Salud Metropolitano Occidente
+110160,209,1.0,True,Hospital de Curacaví,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Occidente
+111100,209,1.0,True,Hospital Clínico San Borja Arriarán,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Central
+111101,209,1.0,True,Hospital Clínico Metropolitano El Carmen Doctor Luis Valentín Ferrada,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Central
+111195,209,1.0,True,Hospital de Urgencia Asistencia Pública Dr. Alejandro del Río,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Central
+112100,209,1.0,True,Hospital Del Salvador de Santiago,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Oriente
+112101,209,1.0,True,"Hospital Dr. Luis Tisné B. (Santiago, Peñalolén)",Región Metropolitana de Santiago,Servicio de Salud Metropolitano Oriente
+112102,209,1.0,True,Hospital de Niños Dr. Luis Calvo Mackenna,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Oriente
+112107,209,1.0,True,Hospital Hanga Roa (Isla De Pascua),Región De Valparaíso,Servicio de Salud Metropolitano Oriente
+113100,209,1.0,True,"Hospital Barros Luco Trudeau (Santiago, San Miguel)",Región Metropolitana de Santiago,Servicio de Salud Metropolitano Sur
+113130,209,1.0,True,"Hospital Dr. Exequiel González Cortés (Santiago, San Miguel)",Región Metropolitana de Santiago,Servicio de Salud Metropolitano Sur
+113150,209,1.0,True,Hospital San Luis (Buin),Región Metropolitana de Santiago,Servicio de Salud Metropolitano Sur
+113180,209,1.0,True,"Hospital El Pino (Santiago, San Bernardo)",Región Metropolitana de Santiago,Servicio de Salud Metropolitano Sur
+113190,209,1.0,True,Hospital Parroquial de San Bernardo (D),Región Metropolitana de Santiago,Servicio de Salud Metropolitano Sur
+114101,209,1.0,True,"Complejo Hospitalario Dr. Sótero del Río (Santiago, Puente Alto)",Región Metropolitana de Santiago,Servicio de Salud Metropolitano Sur Oriente
+114102,209,1.0,True,Hospital San José de Maipo,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Sur Oriente
+114103,209,1.0,True,Hospital Padre Alberto Hurtado (San Ramón),Región Metropolitana de Santiago,Servicio de Salud Metropolitano Sur Oriente
+114105,209,1.0,True,Hospital Clínico Metropolitano La Florida Dra. Eloísa Díaz Insunza,Región Metropolitana de Santiago,Servicio de Salud Metropolitano Sur Oriente
+115100,209,1.0,True,Hospital Regional de Rancagua,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115101,209,1.0,True,Hospital Santa Filomena de Graneros,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115102,209,1.0,True,Hospital de Coínco,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115103,209,1.0,True,Hospital Del Salvador de Peumo,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115104,209,1.0,True,Hospital Dr. Ricardo Valenzuela Sáez (Rengo),Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115105,209,1.0,True,Hospital San Vicente de Tagua -Tagua,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115106,209,1.0,True,Hospital de Pichidegua,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115107,209,1.0,True,Hospital San Juan de Dios de San Fernando,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115108,209,1.0,True,Hospital Mercedes de Chimbarongo,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115109,209,1.0,True,Hospital de Nancagua,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115110,209,1.0,True,Hospital de Santa Cruz,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115111,209,1.0,True,Hospital de Marchigüe,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115112,209,1.0,True,Hospital de Pichilemu,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115113,209,1.0,True,Hospital de Lolol,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+115114,209,1.0,True,Hospital de Litueche,Región Del Libertador Gral. B. O'Higgins,Servicio de Salud Del Libertador B.O'Higgins
+116100,209,1.0,True,Hospital San Juan de Dios (Curicó),Región Del Maule,Servicio de Salud Del Maule
+116101,209,1.0,True,Hospital de Teno,Región Del Maule,Servicio de Salud Del Maule
+116102,209,1.0,True,Hospital de Molina,Región Del Maule,Servicio de Salud Del Maule
+116103,209,1.0,True,Hospital de Hualañé,Región Del Maule,Servicio de Salud Del Maule
+116104,209,1.0,True,Hospital de Licantén,Región Del Maule,Servicio de Salud Del Maule
+116105,209,1.0,True,Hospital Dr. César Garavagno Burotto (Talca),Región Del Maule,Servicio de Salud Del Maule
+116106,209,1.0,True,Hospital de Curepto,Región Del Maule,Servicio de Salud Del Maule
+116107,209,1.0,True,Hospital de Constitución,Región Del Maule,Servicio de Salud Del Maule
+116108,209,1.0,True,Hospital Presidente Carlos Ibáñez del Campo (Linares),Región Del Maule,Servicio de Salud Del Maule
+116109,209,1.0,True,Hospital Dr. Abel Fuentealba Lagos de San Javier,Región Del Maule,Servicio de Salud Del Maule
+116110,209,1.0,True,Hospital San José (Parral),Región Del Maule,Servicio de Salud Del Maule
+116111,209,1.0,True,Hospital San Juan de Dios (Cauquenes),Región Del Maule,Servicio de Salud Del Maule
+116112,209,1.0,True,Hospital Dr. Benjamín Pedreros (Chanco),Región Del Maule,Servicio de Salud Del Maule
+117101,209,1.0,True,Hospital Clínico Herminda Martín (Chillán),Región De Ñuble,Servicio de Salud Ñuble
+117102,209,1.0,True,Hospital de San Carlos,Región De Ñuble,Servicio de Salud Ñuble
+117103,209,1.0,True,Hospital Comunitario de Salud Familiar de Bulnes,Región De Ñuble,Servicio de Salud Ñuble
+117104,209,1.0,True,Hospital Comunitario de Salud Familiar Pedro Morales Campos (Yungay),Región De Ñuble,Servicio de Salud Ñuble
+117106,209,1.0,True,Hospital Comunitario de Salud Familiar de Quirihue,Región De Ñuble,Servicio de Salud Ñuble
+117107,209,1.0,True,Hospital Comunitario de Salud Familiar de El Carmen,Región De Ñuble,Servicio de Salud Ñuble
+117108,209,1.0,True,Hospital Comunitario de Salud Familiar Dr. Eduardo Contreras Trabucco de Coelemu,Región De Ñuble,Servicio de Salud Ñuble
+118100,209,1.0,True,Hospital Clínico Regional Dr. Guillermo Grant Benavente (Concepción),Región Del Bíobío,Servicio de Salud Concepción
+118105,209,1.0,True,Hospital San José (Coronel),Región Del Bíobío,Servicio de Salud Concepción
+118106,209,1.0,True,Hospital de Lota,Región Del Bíobío,Servicio de Salud Concepción
+118107,209,1.0,True,Hospital Clorinda Avello (Santa Juana),Región Del Bíobío,Servicio de Salud Concepción
+118108,209,1.0,True,Hospital San Agustín de Florida,Región Del Bíobío,Servicio de Salud Concepción
+119100,209,1.0,True,Hospital Las Higueras (Talcahuano),Región Del Bíobío,Servicio de Salud Talcahuano
+119101,209,1.0,True,Hospital de Tomé,Región Del Bíobío,Servicio de Salud Talcahuano
+119102,209,1.0,True,Hospital Penco Lirquén,Región Del Bíobío,Servicio de Salud Talcahuano
+120101,209,1.0,True,Complejo Asistencial Dr. Víctor Ríos Ruiz (Los Ángeles),Región Del Bíobío,Servicio de Salud Biobío
+120102,209,1.0,True,Hospital de Mulchén,Región Del Bíobío,Servicio de Salud Biobío
+120103,209,1.0,True,Hospital Comunitario y Familiar de Nacimiento,Región Del Bíobío,Servicio de Salud Biobío
+120104,209,1.0,True,Hospital Comunitario de Yumbel,Región Del Bíobío,Servicio de Salud Biobío
+120105,209,1.0,True,Hospital Comunitario de Laja,Región Del Bíobío,Servicio de Salud Biobío
+120106,209,1.0,True,Hospital Comunitario de Santa Bárbara,Región Del Bíobío,Servicio de Salud Biobío
+120107,209,1.0,True,Hospital Comunitario Dr. Roberto Muñoz Urrutia de Huépil,Región Del Bíobío,Servicio de Salud Biobío
+121109,209,1.0,True,Hospital Dr. Hernán Henríquez Aravena (Temuco),Región De La Araucanía,Servicio de Salud Araucanía Sur
+121110,209,1.0,True,Hospital Dr. Abraham Godoy Peña (Lautaro),Región De La Araucanía,Servicio de Salud Araucanía Sur
+121111,209,1.0,True,Hospital de Galvarino,Región De La Araucanía,Servicio de Salud Araucanía Sur
+121112,209,1.0,True,Hospital de Vilcún,Región De La Araucanía,Servicio de Salud Araucanía Sur
+121113,209,1.0,True,Hospital Dr. Eduardo González Galeno (Cunco),Región De La Araucanía,Servicio de Salud Araucanía Sur
+121114,209,1.0,True,Hospital Intercultural de Nueva Imperial,Región De La Araucanía,Servicio de Salud Araucanía Sur
+121115,209,1.0,True,Hospital de Carahue,Región De La Araucanía,Servicio de Salud Araucanía Sur
+121116,209,1.0,True,Hospital Dr. Arturo Hillerns Larrañaga (Saavedra),Región De La Araucanía,Servicio de Salud Araucanía Sur
+121117,209,1.0,True,Hospital de Pitrufquén,Región De La Araucanía,Servicio de Salud Araucanía Sur
+121118,209,1.0,True,Hospital de Toltén,Región De La Araucanía,Servicio de Salud Araucanía Sur
+121119,209,1.0,True,Hospital de Gorbea,Región De La Araucanía,Servicio de Salud Araucanía Sur
+121120,209,1.0,True,Hospital Familiar y Comunitario de Loncoche,Región De La Araucanía,Servicio de Salud Araucanía Sur
+121121,209,1.0,True,Hospital de Villarrica,Región De La Araucanía,Servicio de Salud Araucanía Sur
+121200,209,1.0,True,Hospital San Francisco de Pucón (D),Región De La Araucanía,Servicio de Salud Araucanía Sur
+121201,209,1.0,True,Hospital Makewe,Región De La Araucanía,Servicio de Salud Araucanía Sur
+122100,209,1.0,True,Hospital Clínico Regional (Valdivia),Región De Los Ríos,Servicio de Salud Los Rios
+122101,209,1.0,True,Hospital de Corral,Región De Los Ríos,Servicio de Salud Los Rios
+122102,209,1.0,True,Hospital de Los Lagos,Región De Los Ríos,Servicio de Salud Los Rios
+122103,209,1.0,True,Hospital de Lanco,Región De Los Ríos,Servicio de Salud Los Rios
+122104,209,1.0,True,Hospital Juan Morey (La Unión),Región De Los Ríos,Servicio de Salud Los Rios
+122105,209,1.0,True,Hospital de Río Bueno,Región De Los Ríos,Servicio de Salud Los Rios
+122106,209,1.0,True,Hospital de Paillaco,Región De Los Ríos,Servicio de Salud Los Rios
+122200,209,1.0,True,Hospital Santa Elisa de San José de la Mariquina,Región De Los Ríos,Servicio de Salud Los Rios
+122201,209,1.0,True,Hospital Padre Bernabé de Lucerna (Panguipulli) (D),Región De Los Ríos,Servicio de Salud Los Rios
+123100,209,1.0,True,Hospital Base San José de Osorno,Región De Los Lagos,Servicio de Salud Osorno
+123101,209,1.0,True,Hospital de Purranque Dr. Juan Hepp Dubiau,Región De Los Lagos,Servicio de Salud Osorno
+123102,209,1.0,True,Hospital de Río Negro,Región De Los Lagos,Servicio de Salud Osorno
+123103,209,1.0,True,Hospital de Puerto Octay,Región De Los Lagos,Servicio de Salud Osorno
+123104,209,1.0,True,Hospital Futa Sruka Lawenche Kunko Mapu Mo,Región De Los Lagos,Servicio de Salud Osorno
+124105,209,1.0,True,Hospital de Puerto Montt,Región De Los Lagos,Servicio de Salud Del Reloncaví
+124110,209,1.0,True,Hospital de Llanquihue,Región De Los Lagos,Servicio de Salud Del Reloncaví
+124115,209,1.0,True,Hospital de Frutillar,Región De Los Lagos,Servicio de Salud Del Reloncaví
+124120,209,1.0,True,Hospital de Fresia,Región De Los Lagos,Servicio de Salud Del Reloncaví
+124125,209,1.0,True,Hospital de Maullín,Región De Los Lagos,Servicio de Salud Del Reloncaví
+124130,209,1.0,True,Hospital de Calbuco,Región De Los Lagos,Servicio de Salud Del Reloncaví
+124145,209,1.0,True,Hospital de Futaleufú,Región De Los Lagos,Servicio de Salud Del Reloncaví
+125100,209,1.0,True,Hospital Regional (Coihaique),Región De Aysén del General Carlos Ibañez del Campo,Servicio de Salud Aisén
+125101,209,1.0,True,Hospital de Puerto Aysén,Región De Aysén del General Carlos Ibañez del Campo,Servicio de Salud Aysén
+125103,209,1.0,True,Hospital Lord Cochrane,Región De Aysén del General Carlos Ibañez del Campo,Servicio de Salud Aisén
+125104,209,1.0,True,Hospital Dr. Jorge Ibar (Cisnes),Región De Aysén del General Carlos Ibañez del Campo,Servicio de Salud Aisén
+126100,209,1.0,True,Hospital Clínico de Magallanes Dr. Lautaro Navarro Avaria,Región De Magallanes y de la Antártica Chilena,Servicio de Salud Magallanes
+126101,209,1.0,True,Hospital Dr. Augusto Essmann Burgos ( Natales),Región De Magallanes y de la Antártica Chilena,Servicio de Salud Magallanes
+126102,209,1.0,True,Hospital Dr. Marco Antonio Chamorro ( Porvenir),Región De Magallanes y de la Antártica Chilena,Servicio de Salud Magallanes
+126704,209,1.0,True,Hospital Comunitario Cristina Calderón de Puerto Williams,Región De Magallanes y de la Antártica Chilena,Servicio de Salud Magallanes
+128109,209,1.0,True,Hospital Provincial Dr. Rafael Avaría (Curanilahue),Región Del Bíobío,Servicio de Salud Arauco
+128110,209,1.0,True,Hospital de Lebu,Región Del Bíobío,Servicio de Salud Arauco
+128111,209,1.0,True,Hospital Intercultural Kallvu Llanka (Cañete),Región Del Bíobío,Servicio de Salud Arauco
+128112,209,1.0,True,Hospital de Contulmo,Región Del Bíobío,Servicio de Salud Arauco
+128113,209,1.0,True,Hospital San Vicente de Arauco,Región Del Bíobío,Servicio de Salud Arauco
+129100,209,1.0,True,Hospital Dr. Mauricio Heyermann (Angol),Región De La Araucanía,Servicio de Salud Araucanía Norte
+129101,209,1.0,True,Hospital de Purén,Región De La Araucanía,Servicio de Salud Araucanía Norte
+129103,209,1.0,True,Hospital de Collipulli,Región De La Araucanía,Servicio de Salud Araucanía Norte
+129104,209,1.0,True,Hospital Dr. Dino Stagno M.(Traiguén),Región De La Araucanía,Servicio de Salud Araucanía Norte
+133150,209,1.0,True,Hospital de Castro,Región De Los Lagos,Servicio de Salud Chiloé
+133155,209,1.0,True,Hospital de Ancud,Región De Los Lagos,Servicio de Salud Chiloé
+133160,209,1.0,True,Hospital Comunitario de Achao,Región De Los Lagos,Servicio de Salud Chiloé
+133165,209,1.0,True,Hospital de Quellón,Región De Los Lagos,Servicio de Salud Chiloé
+133170,209,1.0,True,Hospital Comunitario de Queilén,Región De Los Lagos,Servicio de Salud Chiloé
+200076,209,1.0,True,Hospital de Chaitén,Región De Los Lagos,Servicio de Salud Del Reloncaví
+200717,209,1.0,True,Complejo Asistencial Padre las Casas,Región De La Araucanía,Servicio de Salud Araucanía Sur
+107102,208,0.9952153110047847,True,Hospital de Quilpué,Región De Valparaíso,Servicio de Salud Viña del Mar Quillota
+123105,208,0.9952153110047847,True,Hospital Pu Mulen Quilacahuín,Región De Los Lagos,Servicio de Salud Osorno
+124140,208,0.9952153110047847,True,Hospital de Palena,Región De Los Lagos,Servicio de Salud Del Reloncaví
+129107,206,0.9856459330143541,True,Hospital Dr. Oscar Hernández E.(Curacautín),Región De La Araucanía,Servicio de Salud Araucanía Norte
+129108,206,0.9856459330143541,True,Hospital de Lonquimay,Región De La Araucanía,Servicio de Salud Araucanía Norte
+125102,204,0.9760765550239234,True,Hospital Dr. Leopoldo Ortega R. (Chile Chico),Región De Aysén del General Carlos Ibañez del Campo,Servicio de Salud Aisén
+105107,178,0.8516746411483254,False,Hospital San Juan de Dios (Vicuña),Región De Coquimbo,Servicio de Salud Coquimbo
+129106,121,0.5789473684210527,False,Hospital San José de Victoria,Región De La Araucanía,Servicio de Salud Araucanía Norte
