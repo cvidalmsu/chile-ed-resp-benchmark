@@ -1,11 +1,16 @@
-check,status,value,note
-official_source_counts_preserved,PASS,True,Counts are read from DEIS/SADU; only derived features are computed.
-analysis_years,PASS,"[2022, 2023, 2024, 2025]",
-non_negative_counts,PASS,0,
-age_total_reconciliation,PASS,0,Source rows are preserved even if the official total and age strata do not reconcile.
-age_reconciliation_unavailable,PASS,0,Rows lacking one or more age-stratum values remain unchanged and are reported.
-duplicate_source_strata,PASS,0,Duplicates are reported before wide aggregation; they are not silently discarded.
-forecast_unique_hospital_week,PASS,0,
-forecast_sorted_chronologically,PASS,True,
-chronological_train_test_split,PASS,True,
-no_imputation_of_official_counts,PASS,True,
+check,status,records_examined,records_flagged,value,note
+official_source_counts_preserved,PASS,2699064,0,True,Official count fields are retained; no count imputation is applied.
+analysis_years,PASS,449844,0,"[2022, 2023, 2024, 2025]",
+non_negative_counts,PASS,2699064,0,0,
+age_total_reconciliation,PASS,449844,0,0,Source rows remain unchanged if totals do not reconcile.
+age_reconciliation_unavailable,PASS,449844,0,0,
+duplicate_source_strata,PASS,449844,0,0,
+forecast_unique_hospital_week,PASS,37620,0,0,
+forecast_sorted_chronologically,PASS,37620,0,True,
+chronological_train_test_split,PASS,37620,0,True,
+fixed_209_week_calendar,PASS,209,0,"{'weeks': 209, 'maximum_week_by_year': {2022: 52, 2023: 52, 2024: 52, 2025: 53}}",
+continuous_time_index,PASS,209,0,True,
+complete_hospital_calendar_grid,PASS,37620,0,"{'observed': 37620, 'expected': 37620}",
+consultation_hospitalization_separation,PASS,449844,0,True,
+zero_missing_state_separation,PASS,37620,0,"{'missing': 133, 'explicit_zero': 625}",
+no_imputation_of_official_counts,PASS,2699064,0,True,

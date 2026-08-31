@@ -9,17 +9,17 @@
 \usepackage{enumitem}
 \usepackage{float}
 \usepackage{xurl}
+\usepackage{seqsplit}
 \usepackage{listings}
 \setlength{\headheight}{25pt}
 \setlength{\emergencystretch}{2em}
 \newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
 \newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
 \newcommand{\datasetname}{Chile-ED-Resp}
-\newcommand{\datasetversion}{1.0.0}
+\newcommand{\datasetversion}{1.1.0}
 \newcommand{\dataseturl}{https://github.com/cvidalmsu/chile-ed-resp-benchmark}
-\newcommand{\datasetdoi}{10.5281/zenodo.REPLACE-AFTER-RELEASE}
 \newcommand{\sourceid}{ae6c9887-106d-4e98-8875-40bf2b836041}
-\renewcommand{\today}{August 7, 2026}
+\renewcommand{\today}{August 30, 2026}
 \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,columns=fullflexible,showstringspaces=false}
 
 \firstpage{1}
@@ -50,10 +50,10 @@ $^{4}$ \quad EAP Ingenier\'ia de Sistemas e Inform\'atica, Universidad Continent
 $^{5}$ \quad Facultad de Ingenier\'ia y Negocios, Universidad de Las Am\'ericas, Manuel Montt 948, Providencia, Santiago~7500975, Chile; cristian.vidal.silva@edu.udla.cl}
 \corres{Correspondence: carla.angulo@ubo.cl (C.A.); cristian.vidal.silva@edu.udla.cl (C.V.-S.)}
 
-\abstract{Respiratory emergencies create recurrent seasonal pressure on hospital services, yet reproducible forecasting research is often hindered by the effort required to retrieve, interpret, harmonize, and document public administrative data. Chile-ED-Resp is a curated secondary dataset and reproducible processing pipeline derived from the official Chilean Ministry of Health/DEIS dataset ``Atenciones de urgencias de causas respiratorias por semana epidemiol\'ogica'', produced by the Sistema de Atenci\'on Diaria de Urgencias (SADU). The release focuses on the closed 2022--2025 period and retains official hospital emergency-unit records, respiratory cause labels, total counts, five age strata, establishment characteristics, geographic descriptors, and health-service identifiers. Two complementary analysis-ready artifacts are produced: a long table that preserves official count observations and a hospital-week forecasting table centered on high respiratory infection (IRA Alta), with selected respiratory causes pivoted as covariates. Only deterministic derivatives are added, including coverage diagnostics, chronological train/test labels, seasonal encodings, lags, and prior rolling means; official count fields are neither imputed nor smoothed. Reproducibility is supported through source retrieval metadata, SHA-256 checksums, a machine-readable data dictionary, cause and hospital-coverage inventories, automated validation, unit tests, and a GitHub Actions workflow that rebuilds the release from the official Parquet resource. The resource is intended to provide a transparent foundation for forecasting, benchmarking, health-informatics teaching, and secondary analyses while preserving provenance and the licensing conditions of the government source.}
+\abstract{Respiratory emergencies create recurrent seasonal pressure on hospital services, yet reproducible forecasting research is often hindered by the effort required to retrieve, interpret, harmonize, and document public administrative data. Chile-ED-Resp is a curated secondary dataset and reproducible processing pipeline derived from the official Chilean Ministry of Health/DEIS dataset ``Atenciones de urgencias de causas respiratorias por semana epidemiol\'ogica'', produced by the Sistema de Atenci\'on Diaria de Urgencias (SADU). Version 1.1.0 uses the closed 2022--2025 period and was built from the official Parquet snapshot retrieved on 30 August 2026. After restriction to hospitals and hospital emergency units (UEH), the curated long artifact contains 449,844 rows and 32 variables, representing 180 hospitals and 12 official respiratory cause labels. A complementary forecasting artifact contains 37,620 hospital-week rows and 38 variables on a fixed 209-position statistical-week calendar (52 weeks in 2022--2024 and 53 in 2025); 178 of 180 hospitals (98.9\%) satisfy the predefined $\geq95\%$ target-coverage criterion. Acute upper respiratory infection is retained under its official Spanish label and acronym, IRA Alta. Missing source records remain missing and are distinguished from explicitly reported zeros. Precomputed target-derived predictors use outcomes available through the preceding week and are intended for rolling-origin one-week-ahead evaluation, not an unqualified fixed-origin forecast of the entire test year. Reproducibility is supported through source metadata, SHA-256 checksums, machine-readable descriptive audits, 15 validation checks, unit tests, and an example that recomputes predictors at each forecast origin. The resource provides a transparent foundation for forecasting, benchmarking, health-informatics teaching, and secondary analyses while preserving source provenance and licensing conditions.}
 
-\dataset{\datasetname{}, version \datasetversion{}. Creator: Balc\'azar-Quimi, W.; Angulo, C.; Cornejo-Gaete, C.; Salinas-Neira, B.; Fern\'andez-Bast\'ias, J.; Tupac-Yupanqui, M.; Vidal-Silva, C. Publisher/location: GitHub, \url{\dataseturl}. A versioned Zenodo DOI will be added to the archived release before journal publication: \texttt{\datasetdoi}.}
-\datasetlicense{Curated data files: Creative Commons Attribution-NonCommercial 2.0 Generic (CC BY-NC 2.0), preserving the licensing conditions linked by the official source portal; software: MIT License.}
+\dataset{\datasetname{}, version \datasetversion{}. Creator: Balc\'azar-Quimi, W.; Angulo, C.; Cornejo-Gaete, C.; Salinas-Neira, B.; Fern\'andez-Bast\'ias, J.; Tupac-Yupanqui, M.; Vidal-Silva, C. Publisher/location: GitHub. Repository: \url{\dataseturl}.}
+\datasetlicense{Curated data adaptations: Creative Commons Attribution-NonCommercial 2.0 Generic (CC BY-NC 2.0), requiring non-commercial use, source attribution, identification of changes, and retention of the license notice; software: MIT License.}
 \keyword{emergency department; respiratory illness; hospital demand; time series; forecasting; data curation; DEIS; SADU; reproducibility; FAIR data; Chile}
 
 \begin{document}
@@ -61,22 +61,39 @@ $^{5}$ \quad Facultad de Ingenier\'ia y Negocios, Universidad de Las Am\'ericas,
 \section{Summary}
 \label{sec:summary}
 
-Hospital emergency departments must absorb demand that changes with epidemiological conditions, season, age structure, and local service organization. Respiratory illness is particularly relevant because recurrent winter epidemics can concentrate consultations and hospitalizations within a limited number of weeks. Forecasting approaches have consequently been used to anticipate emergency attendance, bed demand, and severe respiratory hospitalizations \citep{Lucini2020,Duarte2021,Albrecht2024,Ackermann2025}. Recent systematic evidence also shows growing use of machine-learning and deep-learning methods for emergency-demand prediction, while emphasizing persistent limitations in validation, data documentation, and transportability \citep{Blanco2025}. In Chile, regional analyses have reported marked temporal variation in emergency consultations and substantial respiratory-season effects \citep{ToroCastillo2024,DiazCarvajal2025}.
+Hospital emergency departments must absorb demand that changes with epidemiological conditions, season, age structure, and local service organization. Respiratory illness is particularly relevant because recurrent winter epidemics can concentrate consultations and hospitalizations within a limited number of weeks. Forecasting approaches have consequently been used to anticipate emergency attendance, bed demand, and severe respiratory hospitalizations \citep{Lucini2020,Duarte2021,Albrecht2024,Ackermann2025}. Methodological work on emergency-department demand forecasting spans early systematic reviews of statistical models \citep{Wargon2009} through unified and multivariable forecasting pipelines for hourly and daily arrivals and occupancy \citep{Vollmer2021,RostamiTabar2024,Tuominen2024IJF,PortoFogliatto2024,Alenezi2026}. Recent systematic reviews show both the growing use of machine-learning methods in emergency-demand prediction and persistent challenges related to external validation, generalizability, and operational integration \citep{Blanco2026,Hosseini2026}. Pathogen-specific forecasting systems have likewise targeted influenza, respiratory syncytial virus, and combined winter respiratory pressure on hospitals \citep{Mellor2023,Mellor2025,Cutrera2024,ChenXiao2024}. In Chile, empirical analyses have documented temporal variation in emergency consultations and pronounced respiratory-season effects \citep{ToroCastillo2024,DiazCarvajal2025}. Complementary Chilean clinical guidance and recent pediatric commentary describe the evolving respiratory-syncytial-virus and severe acute respiratory-infection context relevant to seasonal preparedness \citep{ZepedaF2024,DiazRubio2026}.
 
-Within this setting, the Chilean Ministry of Health makes weekly respiratory emergency data publicly available through the Departamento de Estad\'isticas e Informaci\'on de Salud (DEIS). The source dataset, produced from the Sistema de Atenci\'on Diaria de Urgencias (SADU), reports consultations and hospitalizations by respiratory cause, establishment, statistical week, and age group \citep{DEIS2026,DEISDictionary2024}. Although the source is highly valuable, downstream forecasting studies must repeatedly solve the same data-engineering tasks: retrieving a large Parquet file, harmonizing field names and types, isolating hospital emergency units, separating consultations from hospitalization rows, checking temporal coverage, pivoting causes to hospital-week features, constructing lagged predictors without leakage, and documenting provenance.
+Within this setting, the Chilean Ministry of Health makes weekly respiratory emergency data publicly available through the Departamento de Estad\'isticas e Informaci\'on de Salud (DEIS). The source dataset, produced from the Sistema de Atenci\'on Diaria de Urgencias (SADU), reports consultations and hospitalizations by respiratory cause, establishment, statistical week, and age group \citep{DEIS2026}. Although the source is highly valuable, downstream forecasting studies must repeatedly solve the same data-engineering tasks: retrieving a large Parquet file, harmonizing field names and types, isolating hospital emergency units, separating consultations from hospitalization rows, checking temporal coverage, pivoting causes to hospital-week features, constructing lagged predictors without leakage, and documenting provenance.
 
-From a data-publication perspective, the principal contribution of \datasetname{} is therefore not a new predictive algorithm. Instead, the resource provides a transparent and reusable data infrastructure derived from the official source. A closely related data-publication strategy has recently been demonstrated in \textit{Data} by Voinea and Voinea, who transformed heterogeneous national health-administration workbooks into harmonized artifacts with provenance logs, checksums, dictionaries, and a reproducible Python pipeline \citep{Voinea2026}. Other recent Data Descriptors likewise emphasize that dataset value depends on clear variable documentation, access conditions, and intended reuse rather than on inferential novelty alone \citep{Berth2026}. The design also follows the FAIR principles of findability, accessibility, interoperability, and reusability \citep{Wilkinson2016}.
+From a data-publication perspective, the principal contribution of \datasetname{} is therefore not a new predictive algorithm. Instead, the resource provides a transparent and reusable research layer over the official source. The design follows the FAIR principles of findability, accessibility, interoperability, and reusability \citep{Wilkinson2016}, including implementation practices such as machine-readable metadata, versioned provenance, and automated validation \citep{Inau2023,Bahim2020,Devaraju2021Patterns,Devaraju2021DSJ,Groth2020,Fenner2019}. Table~\ref{tab:related-descriptors} now compares the release with the closest Chilean and Latin American emergency or respiratory resources rather than with datasets from unrelated domains.
 
-Accordingly, \datasetname{} releases two complementary representations of the same official 2022--2025 respiratory emergency information. The first is a curated long-format table that preserves all qualifying hospital emergency-unit records and the official count values. The second is a forecasting-ready hospital-week table that reorganizes selected consultation causes into columns and adds only deterministic time-series features. An explicit coverage criterion identifies establishments suitable for benchmarking rather than hard-coding a small set of hospitals. The repository records the exact dimensions, hospital inventory, cause inventory, source checksum, retrieval timestamp, and validation results for each release, allowing later versions to remain auditable even if the upstream public portal revises historical records.
+\begin{table}[H]
+\caption{Closest Chilean and Latin American emergency or respiratory data resources and the distinct scope of \datasetname{}.}
+\label{tab:related-descriptors}
+\centering
+\begin{tabularx}{\linewidth}{P{0.19\linewidth}P{0.22\linewidth}P{0.22\linewidth}L}
+\toprule
+Resource & Unit and scope & Preparation for reuse & Difference from \datasetname{} \\
+\midrule
+DEIS weekly respiratory-emergency source, Chile \citep{DEIS2026} & Establishment--week counts by respiratory cause and age group & Mutable official Parquet/XLSX resource and data dictionary & Direct upstream source; not versioned as a forecasting benchmark \\
+DEIS public-network emergency data, Chile \citep{DEISGeneralEmergency2026} & Annual emergency-attendance files derived from DAU records & Year-specific ZIP files and official dictionary & Broader emergency scope; no curated fixed hospital-week respiratory panel \\
+SIVEP-Gripe, Brazil \citep{BrazilSIVEPGripe2026} & Case-level severe acute respiratory syndrome surveillance & Public annual microdata and documentation & Clinical surveillance cases rather than hospital-level emergency-demand series \\
+PAHO respiratory-virus open data \citep{PAHOOpenData2026} & Country/territory surveillance indicators for the Americas & Regional harmonized portal & Country-level surveillance rather than Chilean hospital-week demand \\
+\textbf{\datasetname{} (this work)} & 180 hospitals on a fixed 209-week calendar & Versioned long and forecasting artifacts; checksums, audits, tests, and rolling-origin example & Reproducible hospital-level demand benchmark with explicit zero/missing semantics \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Accordingly, \datasetname{} releases two complementary representations of the same official 2022--2025 respiratory emergency information. The first is a curated long-format table that preserves all qualifying hospital emergency-unit records and official count values. The second is a hospital-week forecasting artifact that reorganizes selected consultation causes and adds documented deterministic features. An explicit coverage criterion identifies establishments suitable for benchmarking rather than hard-coding a small set of hospitals. The repository records dimensions, inventories, descriptive audits, source checksum, retrieval time, and validation results, allowing later versions to remain auditable if the upstream portal revises historical records.
 
 \section{Data Description}
 \label{sec:data-description}
 
 \subsection{Official Source and Scope}
 
-The upstream resource is the government dataset \textit{Atenciones de urgencias de causas respiratorias por semana epidemiol\'ogica}, published through datos.gob.cl by the Chilean Ministry of Health/DEIS \citep{DEIS2026}. The active Parquet resource has identifier \texttt{\sourceid}. At the time this descriptor was prepared, the portal reported weekly updates and linked the resource to the Creative Commons Attribution-NonCommercial 2.0 Generic license \citep{CreativeCommonsBYNC20}. Because the current epidemiological year is continuously updated, the curated release intentionally uses the closed four-year interval 2022--2025. Restricting the versioned release to completed calendar years avoids treating a partially reported current week as a genuine demand decline.
+The upstream resource is the government dataset \textit{Atenciones de urgencias de causas respiratorias por semana epidemiol\'ogica}, published through datos.gob.cl by the Chilean Ministry of Health/DEIS \citep{DEIS2026}. The active Parquet resource has identifier \texttt{\sourceid}. At the time this descriptor was prepared, the portal identified the resource under a Creative Commons Non-Commercial license; the linked terms correspond to Creative Commons Attribution-NonCommercial 2.0 Generic (CC BY-NC 2.0) \citep{DEIS2026,CreativeCommonsBYNC20}. The source field is named \texttt{SemanaEstadistica}; consequently, the manuscript uses \emph{statistical week} for the analytical coordinate and retains \emph{epidemiological week} only when reproducing the official Spanish dataset title. Because the current reporting year is continuously updated, the curated release intentionally uses the closed four-year interval 2022--2025. Restricting the versioned release to completed years avoids treating a partially reported current week as a genuine demand decline. This concern for completeness and timeliness mirrors broader open-government-data quality frameworks \citep{Vetro2016,Bhandari2021}.
 
-The source schema contains 25 variables after normalization to snake-case names. These fields describe establishment, region, municipality, health service, establishment type, administrative dependency, level of care, emergency-care type, coordinates, complexity level, year, statistical week, cause code/order, cause label, total count, and five age-specific count fields. The public schema and representative field types have independently been demonstrated using the same DEIS resource in an open data-analysis workshop, supporting the reproducibility of the field mapping used here \citep{DEISDictionary2024}.
+The source schema contains 25 variables after normalization to snake-case names. These fields describe establishment, region, municipality, health service, establishment type, administrative dependency, level of care, emergency-care type, coordinates, complexity level, year, statistical week, cause code/order, cause label, total count, and five age-specific count fields. The official DEIS data dictionary documents the source schema and field definitions used to map the Parquet resource into the curated release \citep{DEISDictionary2024}.
 
 \begin{table}[H]
 \caption{Variable families retained from the official DEIS/SADU source. The complete machine-readable dictionary is distributed as \texttt{metadata/data\_dictionary.csv}.}
@@ -89,56 +106,233 @@ Family & Main fields & Interpretation \\
 Establishment & \texttt{establecimiento\_codigo}, \texttt{establecimiento\_glosa}, \texttt{tipo\_establecimiento}, \texttt{nivel\_atencion}, \texttt{nivel\_complejidad} & Official identifiers and service characteristics. \\
 Geography & \texttt{region\_*}, \texttt{comuna\_*}, \texttt{latitud}, \texttt{longitud} & Administrative and geographic descriptors. \\
 Health service & \texttt{servicio\_salud\_*}, \texttt{dependencia\_administrativa}, \texttt{tipo\_urgencia} & Network and emergency-unit descriptors. \\
-Time & \texttt{anio}, \texttt{semana\_estadistica} & Official year and statistical/epidemiological week. \\
+Time & \texttt{anio}, \texttt{semana\_estadistica} & Official DEIS statistical year and week. \\
 Respiratory event & \texttt{orden\_causa}, \texttt{causa}, \texttt{num\_total} & Cause label and total consultations or hospitalizations in the stratum. \\
 Age strata & \texttt{num\_menor1anio}, \texttt{num1a4anios}, \texttt{num5a14anios}, \texttt{num15a64anios}, \texttt{num65o\_mas} & Official age-specific counts. \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
+\begin{table}[H]
+\caption{Version 1.1.0 release snapshot generated from the official DEIS/SADU resource.}
+\label{tab:release-snapshot}
+\centering
+\begin{tabularx}{\linewidth}{P{0.34\linewidth}L}
+\toprule
+Release property & Value \\
+\midrule
+Official source snapshot & Retrieved 30 August 2026 at 23:38:36 UTC; 3,629,980 rows; 67,929,078 bytes; resource ID \texttt{\sourceid}. \\
+Curated long artifact & 449,844 rows $\times$ 32 variables; 180 hospitals; 12 official cause labels. \\
+Forecasting artifact & 37,620 rows $\times$ 38 variables; 180 hospitals $\times$ 209 expected statistical-week positions. \\
+Benchmark coverage & 178/180 hospitals (98.9\%) satisfy $C_h\geq0.95$; 172 have complete 209-week target coverage. \\
+Validation & 15 PASS, 0 WARN, 0 FAIL reported validation statuses. \\
+Source integrity & SHA-256 recorded in \texttt{metadata/source\_manifest.json} and fixed for the archived release. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
 \subsection{Released Artifacts}
 
-The repository generates the artifacts summarized in Table~\ref{tab:artifacts}. Exact row counts, numbers of establishments, numbers of causes, and file hashes are written at build time to \texttt{metadata/release\_metadata.json}, \texttt{metadata/hospital\_coverage.csv}, \texttt{metadata/causes.csv}, and \texttt{metadata/SHA256SUMS.txt}. Storing these quantities with the release is deliberate: the source is maintained by an external public agency and may undergo retrospective corrections, whereas a versioned research dataset must remain traceable to the precise snapshot used to build it.
+Version 1.1.0 generates the artifacts summarized in Table~\ref{tab:artifacts}. The long artifact contains 449,844 rows and 32 variables, whereas the forecasting artifact contains 37,620 rows and 38 variables. Both represent 180 hospitals; the long table retains 12 official respiratory cause labels. Exact dimensions and descriptive audits are stored with the release so that a mutable government source can be traced to the precise snapshot used for the build.
 
 \begin{table}[H]
 \caption{Principal files created by the reproducible release pipeline.}
 \label{tab:artifacts}
 \centering
-\begin{tabularx}{\linewidth}{P{0.37\linewidth}P{0.18\linewidth}L}
+\small
+\begin{tabularx}{\linewidth}{P{0.36\linewidth}P{0.15\linewidth}L}
 \toprule
 File & Format & Role \\
 \midrule
-\texttt{chile\_ed\_resp\_hospital\_long} & Parquet; CSV.gz & Curated long-format hospital emergency-unit observations with official count fields plus provenance and quality-control variables. \\
-\path{chile_ed_resp_ira_alta_forecasting} & Parquet; CSV & One row per hospital-week for selected respiratory consultation causes and deterministic forecasting features. \\
-\texttt{source\_manifest.json} & JSON & Retrieval timestamp, upstream identifiers, source URL, byte size, SHA-256 checksum, and license metadata. \\
-\texttt{release\_metadata.json} & JSON & Version, period, row/column counts, hospital/cause counts, curation rules, and transformation statements. \\
-\texttt{hospital\_coverage.csv} & CSV & IRA Alta temporal coverage by establishment and benchmark recommendation flag. \\
-\texttt{causes.csv} & CSV & Inventory of official cause labels, measure type, row count, and reported totals. \\
-\texttt{validation\_checks.csv} & CSV & Machine-readable results of structural and quality-control checks. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{data/chile\_ed\_resp\_}\\\texttt{hospital\_long.parquet}\\\texttt{data/chile\_ed\_resp\_}\\\texttt{hospital\_long.csv.gz}\end{tabular} & Parquet; CSV.gz & Official hospital emergency-unit records plus provenance and quality-control fields. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{data/chile\_ed\_resp\_}\\\texttt{ira\_alta\_forecasting.parquet}\\\texttt{data/chile\_ed\_resp\_}\\\texttt{ira\_alta\_forecasting.csv}\end{tabular} & Parquet; CSV & Fixed-grid hospital-week consultation features and deterministic predictors. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{metadata/source\_}\\\texttt{manifest.json}\end{tabular} & JSON & Retrieval time, identifiers, source URL, byte size, SHA-256, and license. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{metadata/filter\_audit.csv}\\\texttt{metadata/cause\_mapping.csv}\end{tabular} & CSV & Filtering counts and auditable cause-to-feature mapping. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{metadata/variable\_}\\\texttt{completeness.csv}\\\texttt{metadata/forecast\_}\\\texttt{variable\_coverage.csv}\end{tabular} & CSV & Missing/zero frequencies and hospital-level coverage for every forecasting cause. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{metadata/target\_summary.csv}\\\texttt{metadata/temporal\_summary.csv}\end{tabular} & CSV & Distributional and week-level IRA Alta summaries. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{results/validation\_}\\\texttt{checks.csv}\end{tabular} & CSV & Machine-readable structural and quality-control results, including records examined and flagged. \\
+\begin{tabular}[t]{@{}l@{}}\texttt{LICENSE-DATA}\\\texttt{CITATION.cff}\\\texttt{.zenodo.json}\end{tabular} & Text; YAML; JSON & Redistribution terms, citation metadata, and permanent-archive deposit metadata. \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \subsection{Curated Long Table}
 
-The long table restricts the official source to the years 2022--2025, establishments classified as \texttt{Hospital}, and records whose emergency type contains the hospital-emergency designation \texttt{UEH}. No respiratory cause is removed at this stage. Consultation and hospitalization rows are distinguished from the official cause label and stored in the derived field \texttt{measure\_type}; this separation prevents hospitalization counts from being inadvertently interpreted as consultation-demand predictors.
+The long table restricts the official source to the years 2022--2025, establishments classified as \texttt{Hospital}, and records whose emergency type contains the hospital-emergency designation \texttt{UEH}. Table~\ref{tab:filter-audit} reports the row count after every filtering step. The final 449,844 rows represent 180 hospitals and 12 official respiratory cause labels; no cause is removed from the long artifact. Consultation codes 3--11 and hospitalization codes 33--35 are identified from the official \texttt{orden\_causa}/\texttt{causa} combinations and stored in \texttt{measure\_type}. This order-aware rule prevents hospitalization totals from entering consultation predictors.
 
-Beyond normalization of column names and coordinate types, official count fields are retained unchanged. Derived fields include a deterministic row identifier, a human-readable year-week label, the fixed source-resource identifier, the sum of the five official age strata, the difference between that age sum and \texttt{num\_total}, and a quality flag. Any discrepancy between official totals and age-specific fields is reported rather than silently corrected. Likewise, missing source values remain missing; the release does not fill gaps through mean/median substitution, interpolation, or model-based imputation.
+\begin{table}[H]
+\caption{Sequential filtering audit for Version 1.1.0. Counts are also distributed in \texttt{metadata/filter\_audit.csv}.}
+\label{tab:filter-audit}
+\centering
+\begin{tabularx}{\linewidth}{P{0.12\linewidth}L P{0.18\linewidth}P{0.21\linewidth}}
+\toprule
+Step & Retained records & Rows retained & Rows removed at step \\
+\midrule
+0 & Official Parquet snapshot & 3,629,980 & --- \\
+1 & Statistical years 2022--2025 & 1,547,292 & 2,082,688 \\
+2 & \texttt{tipo\_establecimiento = Hospital} & 455,784 & 1,091,508 \\
+3 & \texttt{tipo\_urgencia} contains \texttt{UEH} & 449,844 & 5,940 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Beyond normalization of column names and coordinate types, official count fields are retained unchanged. Derived fields include a deterministic row identifier, \texttt{statistical\_period}, the fixed source-resource identifier, the sum of the five official age strata, the difference between that sum and \texttt{num\_total}, and a quality flag. All six official count variables are complete in the selected long table; their explicit-zero frequencies are reported in Table~\ref{tab:missing-zero}. Any future missing source value remains missing rather than being imputed. Such treatment supports transparent downstream handling of administrative health data \citep{Lin2026}.
 
 \subsection{Forecasting-Ready Hospital-Week Table}
 
-For reuse in time-series forecasting, consultation rows are mapped to canonical variables using transparent text rules on official cause labels. The current mapping recognizes high respiratory infection (IRA Alta), influenza, pneumonia, acute bronchitis/bronchiolitis, other respiratory causes, identified COVID-19, and unidentified COVID-19 when those labels are present in the source. The mapping does not alter values: where multiple official rows map to the same hospital-week feature, their reported \texttt{num\_total} values are summed; where a feature is absent, the resulting cell remains missing rather than being replaced with zero.
+For reuse in time-series forecasting, consultation rows are mapped to canonical variables using the auditable rules in Table~\ref{tab:cause-mapping}. The official label \textit{IRA Alta (J00--J06)} is translated as \emph{acute upper respiratory infection}; the Spanish label and acronym IRA Alta are preserved in the data and manuscript because they are the official source terminology. Aggregate consultation categories, crisis obstructiva bronquial, and all hospitalization rows are retained in the long artifact but excluded from the forecasting features. No source value is reinterpreted during the pivot.
 
-Hospital selection for benchmarking is coverage-based. For each establishment, the pipeline counts weeks in which IRA Alta is observed and divides this value by the number of distinct IRA Alta year-week pairs available nationally within the release window. Establishments with coverage of at least 95\% receive \texttt{recommended\_for\_benchmark = True}. Researchers can therefore reproduce the recommended cohort or choose a different threshold without changing the curated long table.
+\begin{table}[H]
+\caption{Exact cause-by-cause mapping from original DEIS/SADU labels to forecasting fields. Wording and capitalization reproduce the source; \texttt{metadata/cause\_mapping.csv} preserves the verbatim strings, including spacing and punctuation.}
+\label{tab:cause-mapping}
+\centering
+\scriptsize
+\begin{tabularx}{\linewidth}{P{0.05\linewidth}P{0.50\linewidth}P{0.12\linewidth}L}
+\toprule
+ID & Official Spanish label & Measure & Forecast field \\
+\midrule
+3 & TOTAL CAUSA SISTEMA  RESPIRATORIO (J00--J98) & Consult. & Excluded aggregate \\
+4 & IRA Alta (J00--J06) & Consult. & \texttt{ira\_alta} \\
+5 & Influenza (J09--J11) & Consult. & \texttt{influenza} \\
+6 & Neumon\'ia (J12--J18) & Consult. & \texttt{pneumonia} \\
+7 & Bronquitis/bronquiolitis aguda (J20--J21) & Consult. & \begin{tabular}[t]{@{}l@{}}\texttt{bronchitis\_}\\\texttt{bronchiolitis}\end{tabular} \\
+8 & Crisis obstructiva bronquial (J40--J46) & Consult. & Excluded non-target category \\
+9 & Otra causa respiratoria no contenidas en las categor\'ias anteriores (J22; J30--J39, J47, J60--J98) & Consult. & \begin{tabular}[t]{@{}l@{}}\texttt{other\_}\\\texttt{respiratory}\end{tabular} \\
+10 & TOTAL ATENCIONES POR COVID-19  Virus no Identificado U07.2 & Consult. & \begin{tabular}[t]{@{}l@{}}\texttt{covid19\_}\\\texttt{unidentified}\end{tabular} \\
+11 & TOTAL ATENCIONES POR COVID-19, Virus Identificado U07.1 & Consult. & \begin{tabular}[t]{@{}l@{}}\texttt{covid19\_}\\\texttt{identified}\end{tabular} \\
+33 & - Causas sistema respiratorio (J00--J98) & Hosp. & Excluded hospitalization \\
+34 & - Por covid-19, virus no identificado U07.2 & Hosp. & Excluded hospitalization \\
+35 & - Por covid-19, virus identificado U07.1 & Hosp. & Excluded hospitalization \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-Temporal features are constructed after sorting observations by hospital, year, and week. The release provides one-, two-, and four-week lags of IRA Alta, together with a previous-year same-week seasonal lag, trailing four- and 12-week means computed strictly from prior observations, and sine/cosine encodings of statistical week. A default chronological split labels 2022--2024 as training and 2025 as testing. Because lagged and rolling fields use only preceding values, the prepared table avoids look-ahead leakage by construction \citep{Hyndman2021}.
+The mapping is order-aware rather than a fuzzy text substitution: only consultation orders 4, 5, 6, 7, 9, 10, and 11 receive canonical forecasting fields. Consequently, labels that contain similar respiratory or COVID-19 wording but belong to hospitalization orders 33--35 cannot enter the forecasting variables.
+
+An absent hospital-week-cause record is interpreted as unavailable reporting, not as zero events. Explicit zeros are values for which the official source contains a record with \texttt{num\_total = 0}. Accordingly, the pivot retains absent records as \texttt{NA} and preserves recorded zeros as 0; these states are never treated as interchangeable. Table~\ref{tab:missing-zero} shows that every forecasting cause has 133 missing grid positions (0.35\%), while zero frequencies vary materially by cause.
+
+\noindent\textbf{Mandatory interpretation rule.} In the released tables, \texttt{NA} means that no qualifying source record was available for that hospital--week--cause combination, whereas 0 means that a qualifying official row explicitly reported zero events. Users must not replace the former with the latter unless an external reporting model justifies that recoding.
+
+\begin{table}[H]
+\caption{Missingness and explicit-zero frequencies for released count variables. Zero percentages use non-missing observations as the denominator.}
+\label{tab:missing-zero}
+\centering
+\small
+\begin{tabularx}{\linewidth}{P{0.15\linewidth}P{0.25\linewidth}P{0.15\linewidth}P{0.15\linewidth}L}
+\toprule
+Artifact & Variable & Missing, $n$ (\%) & Explicit zero, $n$ & Zero among observed (\%) \\
+\midrule
+Long & \texttt{num\_total} & 0 (0.00) & 153,394 & 34.10 \\
+Long & \texttt{num\_menor1anio} & 0 (0.00) & 320,982 & 71.35 \\
+Long & \texttt{num1a4anios} & 0 (0.00) & 280,005 & 62.24 \\
+Long & \texttt{num5a14anios} & 0 (0.00) & 263,106 & 58.49 \\
+Long & \texttt{num15a64anios} & 0 (0.00) & 199,422 & 44.33 \\
+Long & \texttt{num65o\_mas} & 0 (0.00) & 222,460 & 49.45 \\
+Forecast & \texttt{ira\_alta} & 133 (0.35) & 625 & 1.67 \\
+Forecast & \texttt{influenza} & 133 (0.35) & 16,091 & 42.92 \\
+Forecast & \texttt{pneumonia} & 133 (0.35) & 2,679 & 7.15 \\
+Forecast & \begin{tabular}[t]{@{}l@{}}\texttt{bronchitis\_}\\\texttt{bronchiolitis}\end{tabular} & 133 (0.35) & 1,934 & 5.16 \\
+Forecast & \texttt{other\_respiratory} & 133 (0.35) & 3,529 & 9.41 \\
+Forecast & \begin{tabular}[t]{@{}l@{}}\texttt{covid19\_}\\\texttt{unidentified}\end{tabular} & 133 (0.35) & 23,867 & 63.67 \\
+Forecast & \begin{tabular}[t]{@{}l@{}}\texttt{covid19\_}\\\texttt{identified}\end{tabular} & 133 (0.35) & 23,274 & 62.09 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Hospital selection for benchmarking is coverage-based. The denominator is the fixed 209-position release calendar, not the set of weeks in which IRA Alta happens to appear somewhere nationally. Of the 180 hospitals, 172 report IRA Alta in all 209 positions; six additional hospitals remain above the 95\% threshold with 204--208 observed target weeks. Consequently, 178 hospitals (98.9\%) receive \texttt{recommended\_for\_benchmark = True}. The other two hospitals have 178/209 (85.2\%) and 121/209 (57.9\%) observed positions. Across the complete $180\times209$ grid, 37,487 of 37,620 IRA Alta values are observed (99.65\% completeness). Within the recommended cohort, 37,188 of 37,202 values are observed (99.96\%), leaving 14 missing targets. Table~\ref{tab:coverage-distribution} summarizes the distribution.
+
+\begin{table}[H]
+\caption{Distribution of IRA Alta temporal coverage $C_h$ across the 180 hospitals in Version 1.1.0.}
+\label{tab:coverage-distribution}
+\centering
+\begin{tabularx}{\linewidth}{P{0.28\linewidth}P{0.16\linewidth}P{0.18\linewidth}L}
+\toprule
+Coverage bin ($C_h$) & Hospitals & Share of 180 & Benchmark status \\
+\midrule
+209/209 target weeks (100\%) & 172 & 95.6\% & Recommended \\
+204--208/209 target weeks (97.6--99.5\%) & 6 & 3.3\% & Recommended \\
+178/209 and 121/209 target weeks (85.2\% and 57.9\%) & 2 & 1.1\% & Not recommended \\
+\midrule
+Total (all establishments retained) & 180 & 100\% & 178/180 (98.9\%) recommended \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Table~\ref{tab:forecast-variable-coverage} extends the hospital-level coverage audit to every forecasting cause. All seven variables share the same missingness mask because the selected official cause rows occur together at the retained hospital--week coordinates; their explicit-zero frequencies nevertheless differ, as shown in Table~\ref{tab:missing-zero}. The complete machine-readable audit is distributed as \texttt{metadata/forecast\_variable\_coverage.csv}.
+
+\begin{table}[H]
+\caption{Missingness and hospital-level coverage for every forecasting cause on the $180\times209=37{,}620$ fixed grid.}
+\label{tab:forecast-variable-coverage}
+\centering
+\scriptsize
+\begin{tabularx}{\linewidth}{P{0.27\linewidth}P{0.15\linewidth}P{0.15\linewidth}P{0.15\linewidth}L}
+\toprule
+Variable & Observed, $n$ & Missing, $n$ (\%) & Complete hospitals (209/209) & Hospital coverage groups \\
+\midrule
+\texttt{ira\_alta} & 37,487 & 133 (0.35) & 172 & 6 with 204--208; 2 below 199 \\
+\texttt{influenza} & 37,487 & 133 (0.35) & 172 & 6 with 204--208; 2 below 199 \\
+\texttt{pneumonia} & 37,487 & 133 (0.35) & 172 & 6 with 204--208; 2 below 199 \\
+\begin{tabular}[t]{@{}l@{}}\texttt{bronchitis\_}\\\texttt{bronchiolitis}\end{tabular} & 37,487 & 133 (0.35) & 172 & 6 with 204--208; 2 below 199 \\
+\texttt{other\_respiratory} & 37,487 & 133 (0.35) & 172 & 6 with 204--208; 2 below 199 \\
+\begin{tabular}[t]{@{}l@{}}\texttt{covid19\_}\\\texttt{unidentified}\end{tabular} & 37,487 & 133 (0.35) & 172 & 6 with 204--208; 2 below 199 \\
+\begin{tabular}[t]{@{}l@{}}\texttt{covid19\_}\\\texttt{identified}\end{tabular} & 37,487 & 133 (0.35) & 172 & 6 with 204--208; 2 below 199 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The 180 hospitals cover all 16 Chilean regions (Table~\ref{tab:regions}). Hospital-week metadata are joined on hospital, statistical year, and statistical week, so a latest record is no longer propagated backward. A separate stability audit found no within-hospital changes across the 12 released metadata fields during 2022--2025, but the time-specific implementation avoids relying on that empirical stability.
+
+\begin{table}[H]
+\caption{Hospitals by region in Version 1.1.0.}
+\label{tab:regions}
+\centering
+\small
+\begin{tabularx}{\linewidth}{L P{0.10\linewidth}L P{0.10\linewidth}}
+\toprule
+Region & Hospitals & Region & Hospitals \\
+\midrule
+Metropolitana de Santiago & 24 & La Araucan\'ia & 23 \\
+Los Lagos & 20 & Biob\'io & 20 \\
+Valpara\'iso & 19 & O'Higgins & 15 \\
+Maule & 13 & Coquimbo & 9 \\
+Los R\'ios & 9 & \~Nuble & 7 \\
+Antofagasta & 5 & Atacama & 5 \\
+Ays\'en & 5 & Magallanes & 4 \\
+Arica y Parinacota & 1 & Tarapac\'a & 1 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+IRA Alta has 37,487 observed hospital-week values, a mean of 76.63 (SD 73.14), median 58 (interquartile range 29--102), range 0--4,415, and aggregate total 2,872,473. Table~\ref{tab:target-summary} shows the year-specific distribution and national weekly peak. The peak shifts between statistical weeks 20 and 43 across years, illustrating the temporal heterogeneity that motivates year-aware validation.
+
+\begin{table}[H]
+\caption{Distribution and temporal summary of acute upper respiratory infection (official label: IRA Alta).}
+\label{tab:target-summary}
+\centering
+\small
+\begin{tabularx}{\linewidth}{P{0.09\linewidth}P{0.17\linewidth}P{0.11\linewidth}P{0.18\linewidth}P{0.18\linewidth}L}
+\toprule
+Period & \shortstack[l]{Observed\\missing} & Zeros & \shortstack[l]{Mean\\SD} & \shortstack[l]{Median\\IQR} & Peak week (total) \\
+\midrule
+2022 & 9,352 / 8 & 163 & 86.38 $\pm$ 95.13 & 61 [28--116] & W43 (26,615) \\
+2023 & 9,298 / 62 & 151 & 80.11 $\pm$ 70.31 & 61 [32--106] & W20 (26,279) \\
+2024 & 9,307 / 53 & 161 & 75.24 $\pm$ 63.39 & 59 [33--101] & W20 (26,031) \\
+2025 & 9,530 / 10 & 150 & 65.01 $\pm$ 56.35 & 51 [26--88] & W43 (16,280) \\
+Overall & 37,487 / 133 & 625 & 76.63 $\pm$ 73.14 & 58 [29--102] & 2022-W43 (26,615) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begingroup\sloppy
+Temporal features are constructed only after sorting by hospital and continuous \texttt{time\_index}. The release provides one-, two-, and four-week lags, \path{ira_alta_prev_year_same_week}, trailing four- and 12-week means, and within-year sine/cosine encodings. A chronological split labels 2022--2024 as training and 2025 as testing. The information available for a one-week-ahead origin $t$ comprises target observations through $t-1$; therefore, the stored target-derived predictors support rolling-origin one-step evaluation. They must not be used unchanged for a fixed-origin multi-step forecast of all 2025, because later 2025 rows incorporate outcomes observed during 2025. For fixed-origin evaluation, users must generate predictors recursively or restrict models to information available at the fixed origin \citep{Hyndman2021}.
+\endgroup
 
 \section{Methods}
 \label{sec:methods}
 
 \subsection{Reproducible Processing Workflow}
 
-Figure~\ref{fig:pipeline} summarizes the curation workflow. The process begins from the stable government resource identifier rather than from a manually downloaded local copy. The downloader uses repeated HTTP attempts and a command-line fallback, verifies that the retrieved object has a valid Parquet signature, computes a SHA-256 digest, and writes a source manifest before transformation. The raw government file is intentionally excluded from Git version control; the release instead stores its provenance metadata and redistributes only the curated 2022--2025 artifacts under the source-compatible license.
+Figure~\ref{fig:pipeline} summarizes the curation workflow. The process begins from the stable government resource identifier rather than from a manually downloaded local copy. For Version 1.1.0, the official Parquet snapshot was retrieved on 30 August 2026 at 23:38:36 UTC, contained 3,629,980 rows, had a size of 67,929,078 bytes, and produced the SHA-256 digest reported in the source manifest and Data Availability Statement. The downloader verifies the Parquet signature, computes the digest, and writes provenance before transformation. The raw government file is excluded from Git version control; the release stores its manifest and redistributes only the curated 2022--2025 artifacts under the source-compatible license.
 
 \begin{figure}[H]
 \centering
@@ -155,7 +349,7 @@ arrow/.style={-Latex, thick}
 \node[box, below=0.65cm of filter] (pivot) {Cause mapping +\\hospital-week pivot};
 \node[box, left=of pivot] (features) {Coverage + lags +\\rolling/time features};
 \node[box, left=of features] (valid) {Validation + inventories\\+ file checksums};
-\node[box, left=of valid] (release) {GitHub/Zenodo\\versioned release};
+\node[box, left=of valid] (release) {GitHub\\versioned release};
 \draw[arrow] (source) -- (prov);
 \draw[arrow] (prov) -- (filter);
 \draw[arrow] (filter) -- (long);
@@ -173,31 +367,39 @@ arrow/.style={-Latex, thick}
 
 Column names are normalized to lower-case snake case. Because public-data schemas can appear with either CamelCase or previously cleaned headings, the build script matches fields through an underscore-insensitive canonical key before checking for the complete expected 25-field schema. If an expected source field is absent, the build stops rather than guessing a replacement. Numeric count, year, week, and cause-order columns are explicitly parsed; coordinates are converted from decimal-comma text to numeric decimal-point representation. No other source values are standardized in a way that changes their substantive meaning.
 
-The curation script also keeps an explicit cause inventory. The inventory records every official cause label present in the selected hospital/UEH period, its consultation/hospitalization classification, number of source rows, and aggregate reported total. Maintaining the original label alongside canonical forecasting features allows users to audit the text mapping and to rebuild alternative targets.
+The curation script also keeps an explicit cause inventory. Consultation versus hospitalization is assigned from the official cause-order group, and \texttt{canonical\_feature} is assigned only to consultation orders 4, 5, 6, 7, 9, 10, and 11. The inventory records every official label, measure class, number of source rows, aggregate reported total, canonical field, inclusion status, and exclusion reason. Maintaining the original label alongside canonical features allows users to audit the mapping and rebuild alternative targets.
+
+\subsection{Fixed Statistical-Week Calendar and Time Index}
+
+The release calendar is constructed before inspecting hospital-specific target availability. The official DEIS coordinates present in the archived 2022--2025 source define weeks 1--52 for 2022, 2023, and 2024 and weeks 1--53 for 2025, yielding 209 expected positions. The build checks the observed national IRA Alta coordinate set against this complete grid, validates the week-53 transition, and crosses all 180 hospitals with the grid. A zero-based \texttt{time\_index} runs continuously from 0 to 208, and \texttt{weeks\_in\_statistical\_year} records whether the corresponding year contains 52 or 53 positions. Consequently, a week absent everywhere in a future source snapshot would remain an explicit all-missing grid position rather than causing later row-shift lags to cease representing consecutive calendar positions.
 
 \subsection{Hospital Coverage and Selection}
 
-Rather than selecting hospitals on the basis of peak demand, geographic convenience, or prior model performance, the release applies a transparent completeness criterion. Let $W$ denote the set of distinct year-week combinations in which IRA Alta is observed anywhere in the hospital subset, and let $W_h$ denote the subset observed for hospital $h$. Coverage is
+Rather than selecting hospitals on the basis of peak demand, geographic convenience, or prior model performance, the release applies a transparent completeness criterion. Let $W^{*}$ denote the fixed set of 209 expected statistical-week positions and let $W_h\subseteq W^{*}$ denote positions with an observed IRA Alta value for hospital $h$. Coverage is
 \begin{equation}
-C_h = \frac{|W_h|}{|W|}.
+C_h = \frac{|W_h|}{|W^{*}|}=\frac{|W_h|}{209}.
 \end{equation}
-The default benchmark recommendation is $C_h \geq 0.95$. The threshold is not presented as a clinical quality criterion; it is a data-completeness rule intended to reduce avoidable missingness in forecasting comparisons. The full hospital subset remains available so that users may adopt other inclusion criteria.
+The fixed denominator prevents a nationally absent source record from inflating every hospital's coverage. The default benchmark recommendation is $C_h \geq 0.95$. On the 209-position calendar, this rule requires at least 199 observed target weeks and permits at most 10 missing weeks (4.8\%). It was specified as a completeness convention independently of forecasting outcomes. The observed coverage distribution provides an additional empirical check: the least-complete retained hospital has 204/209 weeks (97.6\%), whereas the most-complete excluded hospital has 178/209 weeks (85.2\%). Thus, the 0.95 cutoff lies inside an observed separation gap, and any threshold in $(178/209,\,204/209]$ yields the same 178-hospital benchmark cohort. This threshold is not a clinical quality criterion or a claim that 0.95 is universally optimal; it limits avoidable missingness while retaining 98.9\% of hospitals, and the full 180-hospital grid remains available for sensitivity analyses using alternative criteria.
 
 \subsection{Feature Engineering Without Leakage}
 
-For a hospital $h$ and ordered weekly target series $y_{h,t}$, lag features are defined as $y_{h,t-k}$ for $k \in \{1,2,4,52\}$. Prior rolling means use
+\begingroup\sloppy
+For a hospital $h$ and target series $y_{h,t}$ ordered by \texttt{time\_index}, short-term lag features are $y_{h,t-k}$ for $k \in \{1,2,4\}$. The year-over-year feature is not a fixed 52-row shift. For statistical year $a$ and statistical week $w$, it matches $y^{(\mathrm{prev\mbox{-}year})}_{h,a,w}=y_{h,a-1,w}$ and is therefore named \path{ira_alta_prev_year_same_week}. This definition handles the 2025 week-53 transition explicitly; where the preceding year lacks week 53 or the matched source value is unavailable, the feature is missing. Prior rolling means use
 \begin{equation}
 \bar{y}^{(m)}_{h,t}=\frac{1}{m}\sum_{j=1}^{m}y_{h,t-j}, \quad m \in \{4,12\},
 \end{equation}
-whenever all required prior values exist. The current observation $y_{h,t}$ is excluded from each rolling feature. Seasonal position is encoded as
+whenever all required prior values exist. Because every hospital is crossed with the complete calendar before feature computation, $t-k$ denotes the exact preceding grid position rather than the $k$th preceding observed value. Thus, a missing $y_{h,t-k}$ produces a missing lag and is never bypassed. Rolling windows likewise operate on the preceding four or 12 grid positions with the required observation count equal to the window length; if any position in that window is missing, the rolling mean remains missing rather than shortening the window or skipping the gap. Boundary positions without sufficient history also remain missing. The current observation $y_{h,t}$ is excluded from each rolling feature.
+
+Seasonal position is encoded as
 \begin{equation}
-s_t=\sin\left(\frac{2\pi w_t}{52}\right), \qquad c_t=\cos\left(\frac{2\pi w_t}{52}\right),
+s_t=\sin\left(\frac{2\pi (w_t-1)}{m_t}\right), \qquad c_t=\cos\left(\frac{2\pi (w_t-1)}{m_t}\right),
 \end{equation}
-where $w_t$ is statistical week. Such deterministic temporal encodings permit use by linear, tree-based, or neural forecasting models without adding external information.
+where $w_t$ is the statistical-week number and $m_t\in\{52,53\}$ is the number of positions in that statistical year. In a 53-week statistical year, week 53 is retained as a distinct observation and is encoded at angle $2\pi(52/53)$, the last unique phase before week 1 of the next year returns to $(s_t,c_t)=(0,1)$. It is neither dropped nor duplicated as week 1. In a 52-week year, the denominator is 52; consequently, the same numbered week can have a slightly different normalized annual phase across 52- and 53-week years by design. Therefore, the implementation does not use a fixed denominator of 52: it reads \texttt{weeks\_in\_statistical\_year} for every row. The information set for rolling-origin one-week-ahead evaluation at origin $t$ is $\mathcal{I}_{h,t}=\{y_{h,s}:s<t\}$ together with non-target covariates available by $t$. The repository example reconstructs all target-derived predictors from $\mathcal{I}_{h,t}$ at every origin and appends $y_{h,t}$ to the history only after the forecast has been scored. For a fixed-origin horizon $H>1$, users must recursively update target-derived features or omit predictors unavailable at the origin; the precomputed 2025 columns do not by themselves establish leakage-free fixed-origin evaluation.
+\endgroup
 
 \subsection{Automated Build and Versioning}
 
-The public repository contains Python scripts for source retrieval, curation, validation, and an optional seasonal-naive baseline. Unit tests cover schema normalization and cause-label mapping. A manual GitHub Actions workflow installs the declared dependencies, executes the tests, downloads the official resource, builds both data artifacts, runs validation, and commits the versioned outputs and metadata. This approach makes the publication package independently rebuildable without requiring authors to distribute the large upstream raw file.
+The public repository contains Python scripts for source retrieval, curation, validation, descriptive audits, and rolling-origin evaluation. Unit tests cover schema normalization, cause/measure separation, the 209-position calendar, and continuous time indexing. The GitHub Actions workflow uses Python 3.12.13 and installs \texttt{requirements.lock} with \texttt{--require-hashes}; this file fixes the complete direct and transitive dependency graph to exact versions and verifies package hashes. The human-maintained \texttt{requirements.txt} retains only development-level minimum constraints and is not used for the reproducible workflow. The action then executes the tests, downloads the official resource, builds both data artifacts, runs validation, and writes the versioned outputs and metadata. The evaluation script implements a one-week horizon for 2025 and recomputes lag-1, lag-2, lag-4, four- and 12-week rolling means, and the previous-year same-week value at every forecast origin without reading the precomputed predictor columns. This approach makes the publication package independently rebuildable without distributing the upstream raw file \citep{Kim2022GitHub,Braga2023}.
 
 Version-specific provenance is strengthened through cryptographic hashes. The source manifest records retrieval time, file size, and SHA-256 of the official Parquet snapshot; the final checksum file records hashes of the curated Parquet/CSV artifacts and principal metadata files. Similar checksum-based provenance has recently been used in a national health-data Data Descriptor to distinguish an immutable research release from mutable upstream public files \citep{Voinea2026}.
 
@@ -206,47 +408,53 @@ Version-specific provenance is strengthened through cryptographic hashes. The so
 Validation is designed to detect structural and source-quality issues without rewriting official observations. Table~\ref{tab:validation} lists the automated checks. A \texttt{FAIL} status stops the release when the forecasting table cannot be trusted structurally; a \texttt{WARN} status exposes a potentially relevant anomaly while preserving the source values for transparent secondary analysis.
 
 \begin{table}[H]
-\caption{Automated validation checks implemented in \texttt{scripts/validate\_dataset.py}.}
+\caption{Validation controls and record counts for the 30 August 2026 Version 1.1.0 build. The same fields are distributed in \texttt{results/validation\_checks.csv}.}
 \label{tab:validation}
 \centering
-\begin{tabularx}{\linewidth}{P{0.32\linewidth}P{0.16\linewidth}L}
+\scriptsize
+\begin{tabularx}{\linewidth}{P{0.30\linewidth}P{0.16\linewidth}P{0.34\linewidth}L}
 \toprule
-Check & Severity & Purpose \\
+Check & Records examined & Observed result & Status \\
 \midrule
-Official source counts preserved & Pass assertion & Confirms that demand counts are read from DEIS/SADU and only derived fields are computed. \\
-Analysis years & Fail if invalid & Ensures the versioned release is restricted to 2022--2025. \\
-Non-negative counts & Warning & Reports unexpected negative administrative counts without silently changing them. \\
-Age-total reconciliation & Warning & Compares \texttt{num\_total} with the five age-stratum fields and reports mismatches. \\
-Unavailable age reconciliation & Warning & Reports rows for which the age check cannot be completed because source strata are missing. \\
-Duplicate source strata & Warning & Flags repeated hospital-week-cause keys before wide aggregation. \\
-Unique hospital-week forecast key & Fail if violated & Guarantees one forecasting row per establishment/year/week. \\
-Chronological ordering & Warning & Verifies stable time ordering within the release. \\
-Chronological split & Fail if violated & Ensures training years precede the 2025 test year. \\
-No count imputation & Pass assertion & Documents that missing official counts are not replaced. \\
+Official source counts preserved & 2,699,064 count cells & 0 modified cells & PASS \\
+Analysis years & 449,844 long rows & 0 rows outside 2022--2025 & PASS \\
+Non-negative counts & 2,699,064 count cells & 0 negative cells & PASS \\
+Age-total reconciliation & 449,844 long rows & 0 mismatches & PASS \\
+Unavailable age reconciliation & 449,844 long rows & 0 unavailable checks & PASS \\
+Duplicate source strata & 449,844 long rows & 0 duplicated-key rows & PASS \\
+Unique hospital-week forecast key & 37,620 forecast rows & 0 duplicated keys & PASS \\
+Chronological ordering & 37,620 forecast rows & 0 order violations & PASS \\
+Chronological split & 37,620 forecast rows & 0 invalid split rows & PASS \\
+Fixed 209-week calendar & 209 national positions & 0 missing/unexpected positions & PASS \\
+Continuous time index & 209 positions & 0 discontinuities & PASS \\
+Complete hospital-calendar grid & 37,620 expected rows & 0 missing/extra rows & PASS \\
+Consultation--hospitalization separation & 449,844 long rows & 0 misclassified rows & PASS \\
+Zero/missing state separation & 37,620 target cells & 133 missing; 625 explicit zeros; 0 conflations & PASS \\
+No count imputation & 2,699,064 count cells & 0 imputed cells & PASS \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-In addition to these checks, the pipeline writes the hospital-coverage table and cause inventory so that the cohort and mappings can be inspected independently of the manuscript. An optional seasonal-naive example predicts 2025 IRA Alta from the 52-week lag for recommended hospitals and writes establishment-level MAE, RMSE, and MAPE. Those metrics are intentionally treated as a usage demonstration rather than as a substantive result of the Data Descriptor.
+For the 30 August 2026 build of Version 1.1.0, the validation report recorded 15 \texttt{PASS}, 0 \texttt{WARN}, and 0 \texttt{FAIL} statuses. Table~\ref{tab:validation} reports the exact scope of each check and retains zero-valued exception counts rather than replacing them with a generic pass indicator. It confirms 449,844 long-format rows, 37,620 forecasting rows, 180 hospitals, 12 official labels, the fixed 209-position grid, a continuous time index, and order-aware separation of consultation and hospitalization measures. The rolling-origin example writes origin-level predictions and establishment-level MAE, RMSE, and MAPE; these outputs demonstrate the evaluation protocol and are not presented as evidence that one forecasting model is superior.
 
 \section{User Notes}
 \label{sec:user-notes}
 
 \subsection{Reproducing the Release}
 
-Users can reproduce the complete release from a clean checkout with the commands below. Python 3.12 is used in the GitHub Actions workflow, while package versions are constrained through minimum versions in \texttt{requirements.txt}.
+Users can reproduce the complete release from a clean checkout with the commands below. The reproducible workflow uses Python 3.12.13 and the hash-verified \texttt{requirements.lock}; \texttt{requirements.txt} remains the editable declaration of minimum development requirements rather than the environment specification used for the release.
 
 \begin{lstlisting}[language=bash]
 git clone https://github.com/cvidalmsu/chile-ed-resp-benchmark.git
 cd chile-ed-resp-benchmark
 python -m venv .venv
 # activate the environment for the operating system in use
-pip install -r requirements.txt
+python -m pip install --require-hashes -r requirements.lock
 pytest -q
 python scripts/make_release.py --start-year 2022 --end-year 2025 --force-download
 \end{lstlisting}
 
-Alternatively, repository maintainers can run \textit{Actions $\rightarrow$ Build DEIS-SADU dataset $\rightarrow$ Run workflow}. The action records the newly retrieved source checksum before rebuilding the release. For a publication snapshot, users should cite the Zenodo DOI associated with the tagged GitHub release rather than a mutable branch URL.
+Alternatively, repository maintainers can run \textit{Actions $\rightarrow$ Build DEIS-SADU dataset $\rightarrow$ Run workflow}. The action records the newly retrieved source checksum before rebuilding the release. For reuse and citation, users should reference the public \datasetname{} GitHub repository at \url{\dataseturl} and report the dataset version used in their analysis.
 
 \subsection{Recommended Forecasting Use}
 
@@ -254,25 +462,45 @@ For comparable model experiments, the recommended starting point is the forecast
 \begin{center}
 \path{data/chile_ed_resp_ira_alta_forecasting.parquet}
 \end{center}
-Users should initially restrict the table to establishments carrying the benchmark recommendation flag. The supplied \texttt{split} field provides a simple 2022--2024/2025 holdout. Researchers requiring robust model comparison should additionally use rolling-origin or expanding-window validation inside the training period rather than randomly shuffling weekly observations \citep{Hyndman2021}. High-dimensional models should be interpreted cautiously because model complexity and sample frequency can materially affect performance in emergency-demand forecasting \citep{Tuominen2022,Blanco2025}.
+Users seeking a high-completeness benchmark should initially restrict the table to the 178 establishments carrying the benchmark recommendation flag. The supplied \texttt{split} field provides a 2022--2024/2025 partition, but the valid interpretation of target-derived predictors depends on forecast design. For rolling-origin one-week-ahead evaluation, run \texttt{scripts/rolling\_origin\_example.py}; the script reconstructs the information set at each origin and exposes each recomputed predictor in \texttt{results/rolling\_origin\_predictions.csv}. For a fixed origin preceding 2025, later 2025 target-derived columns must not be used as known inputs; generate them recursively or select origin-available covariates. Randomly shuffled weekly observations are unsuitable for either design \citep{Hyndman2021}. High-dimensional models should be interpreted cautiously because model complexity and sample frequency can materially affect performance in emergency-demand forecasting \citep{Tuominen2022,Blanco2026}.
 
-For epidemiological or descriptive analyses, the long table is preferable because it retains official age strata, cause wording, hospitalizations, and establishment metadata. Users should avoid summing consultation and hospitalization rows into a single outcome unless the analytical question explicitly requires such an aggregate. The \texttt{measure\_type}, \texttt{causa}, and \texttt{orden\_causa} fields are provided to make that distinction inspectable.
+For descriptive analyses, the long table is preferable because it retains official age strata, cause wording, hospitalizations, and establishment metadata. Users should avoid summing consultation and hospitalization rows into a single outcome unless the analytical question explicitly requires such an aggregate. The \texttt{measure\_type}, \texttt{causa}, and \texttt{orden\_causa} fields make that distinction inspectable. Likewise, absent records must not be recoded as zeros without a justified external reporting model.
 
 \subsection{Licensing, Attribution, and Provenance}
 
-The official resource page links the source to CC BY-NC 2.0 \citep{DEIS2026,CreativeCommonsBYNC20}. The curated data files are therefore distributed under the same license, with explicit attribution to the Chilean Ministry of Health/DEIS and an indication that the authors transformed the source through filtering, type normalization, pivoting, and feature engineering. The MIT license applies only to the software. Users intending commercial reuse should not assume that the code license overrides the non-commercial condition attached to the source-derived data.
+The official resource page labels the source under a Creative Commons Non-Commercial license \citep{DEIS2026}; the release documents the corresponding CC BY-NC 2.0 licensing terms \citep{CreativeCommonsBYNC20}. The curated tables are adaptations of those records and may be copied, shared, and further adapted only for non-commercial purposes under those terms. Redistribution must retain reasonable attribution to the Chilean Ministry of Health/DEIS, the official dataset title and source link, the CC BY-NC 2.0 license URI, and applicable license/disclaimer notices; it must also identify the transformations made by \datasetname{} and any further changes made by the redistributor. Redistributors may not add legal or technological restrictions that prevent recipients from exercising the licensed rights. Use primarily intended for commercial advantage or private monetary compensation requires separate permission from the applicable rights holder. The repository file \texttt{LICENSE-DATA} provides a practical redistribution checklist and the authoritative license link. The MIT license applies only to the software and does not override the non-commercial condition attached to the source-derived data; the original DEIS/SADU records are not relicensed by the authors.
 
 \subsection{Limitations and Reuse Hazards}
 
 Several limitations should guide interpretation. First, the resource contains aggregate administrative counts rather than individual patient records; it cannot support patient-level risk prediction, causal inference, or analyses requiring comorbidity trajectories. Second, the meaning and completeness of administrative reporting depend on the upstream SADU system and local establishment practices. The pipeline reports anomalies but cannot independently verify whether every source count reflects complete clinical activity. Third, retrospective corrections by the public agency can change the current upstream file; source manifests and versioned releases are therefore essential when reproducing a published analysis.
 
-Further limitations arise from temporal and modeling choices. The 2022--2025 window was selected to create a closed contemporary period, not to claim that earlier years are unusable. The 95\% IRA Alta coverage threshold is a reproducible benchmarking rule rather than a universal hospital-inclusion standard. Derived lags and rolling means remain missing when sufficient history is unavailable, and users should decide how their chosen model handles these rows rather than treating absence as zero. No weather, staffing, bed-occupancy, holiday, or socioeconomic variable is added to the core release because such variables originate from different data systems and would require separate provenance and licensing documentation.
+Further limitations arise from temporal and modeling choices. The 2022--2025 window was selected to create a closed contemporary period, not to claim that earlier years are unusable. The 95\% IRA Alta coverage threshold is a reproducible benchmarking rule rather than a universal hospital-inclusion standard. Derived lags and rolling means remain missing when history is insufficient or when an exact required grid position is unavailable; gaps are never skipped or collapsed. Moreover, precomputed target-derived fields encode observations through the preceding row and therefore support sequential one-week origins, not a fixed-origin 53-week claim. No weather, staffing, bed-occupancy, holiday, or socioeconomic variable is added to the core release because such variables require separate provenance and licensing documentation.
 
-Finally, the data should not be interpreted as a direct measure of latent population disease incidence. Emergency consultations reflect both morbidity and healthcare-seeking behavior, local service organization, referral patterns, and reporting practice. Forecasting models built from the resource are therefore best understood as models of reported emergency demand within the represented public-service context.
+Finally, the data should not be interpreted as a direct measure of latent population disease incidence. Emergency consultations reflect both morbidity and healthcare-seeking behavior, local service organization, referral patterns, and reporting practice. Forecasting models built from the resource are therefore best understood as models of reported emergency demand within the represented public-service context. Table~\ref{tab:limitations-mitigations} summarizes these limitations alongside recommended mitigations for downstream users.
+
+\begin{table}[htbp]
+\caption{Principal limitations of \datasetname{} and recommended mitigations for reuse.}
+\label{tab:limitations-mitigations}
+\centering
+\begin{tabularx}{\linewidth}{P{0.42\linewidth}L}
+\toprule
+Limitation & Recommended mitigation / user guidance \\
+\midrule
+Aggregate administrative counts, not patient-level records & Do not use for patient-level risk prediction or causal inference; restrict to hospital- or population-level demand analysis \\
+SADU reporting completeness depends on the upstream system and local establishment practice & Prioritize the 178 hospitals flagged \texttt{recommended\_for\_benchmark = True}; consult \texttt{hospital\_coverage.csv} before pooling establishments \\
+Upstream DEIS/SADU file may be retrospectively corrected by the public agency & Cite the \datasetname{} GitHub repository, report the dataset version used, and preserve the SHA-256 checksum of the corresponding source snapshot rather than relying only on the mutable upstream portal URL \\
+The 95\% coverage threshold is a reproducibility convention, not a clinical quality standard & Recompute $C_h$ with an alternative threshold using the complete 180-hospital grid if a different inclusion rule is required \\
+Lags and rolling means are missing where history is insufficient or an exact required grid position is unavailable & Preserve the fixed time axis; do not skip gaps or substitute zero for absence \\
+Target-derived 2025 fields become available sequentially & Use the rolling-origin script for one-week forecasts; reconstruct recursively for fixed-origin multi-week evaluation \\
+Absent hospital-week-cause record is not an event count & Preserve as missing; use only explicit source records with \texttt{num\_total = 0} as zero events \\
+Consultations reflect healthcare-seeking behavior as well as morbidity & Interpret forecasts as models of reported emergency demand, not of latent disease incidence \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \section{Conclusions}
 
-In summary, \datasetname{} converts a valuable but operationally oriented Chilean public-health resource into a documented, reproducible, and forecasting-ready research dataset without replacing official count observations. The long artifact preserves the source structure needed for transparent secondary analysis, while the hospital-week artifact supplies deterministic features and a coverage-based cohort for time-series benchmarking. Source manifests, checksums, inventories, validation reports, tests, and automated rebuilding support traceability from the public DEIS/SADU resource to each archived release. By separating data curation from claims about the superiority of a particular forecasting model, the resource provides a stronger foundation for subsequent statistical, machine-learning, and health-informatics studies.
+In summary, \datasetname{} converts a valuable but operationally oriented Chilean public-health resource into a documented and reproducible research dataset without replacing official count observations. Version 1.1.0 comprises a 449,844-row, 32-variable long artifact and a 37,620-row, 38-variable hospital-week artifact covering 180 hospitals, 12 official labels, and 209 expected statistical weeks during 2022--2025. A fixed-denominator coverage rule identifies 178 hospitals for benchmarking while retaining all 180 establishments. The release provides a verbatim cause-to-variable mapping, reports coverage for all seven forecasting causes, distinguishes missing records from explicit zeros, preserves time-specific metadata, excludes hospitalization codes from consultation features, and provides a one-week rolling-origin example. Fifteen validation checks pass with no warnings or failures, and their record scopes and zero-valued exception counts are reported explicitly. Source manifests, checksums, descriptive audits, tests, licensing guidance, and automated rebuilding support traceability from DEIS/SADU to the versioned release.
 
 \authorcontributions{Conceptualization, W.B.-Q., C.A. and C.V.-S.; methodology, C.A., C.C.-G., B.S.-N., J.F.-B. and C.V.-S.; software, B.S.-N., J.F.-B. and M.T.-Y.; validation, C.C.-G., B.S.-N., J.F.-B. and M.T.-Y.; formal analysis, C.A., C.C.-G., B.S.-N. and J.F.-B.; data curation, B.S.-N., J.F.-B. and C.C.-G.; writing---original draft preparation, W.B.-Q., C.A., B.S.-N. and J.F.-B.; writing---review and editing, all authors; visualization, B.S.-N., J.F.-B. and M.T.-Y.; supervision, C.A. and C.V.-S.; project administration, W.B.-Q. and C.V.-S. All authors have read and agreed to the published version of the manuscript.}
 
@@ -282,7 +510,7 @@ In summary, \datasetname{} converts a valuable but operationally oriented Chilea
 
 \informedconsent{Not applicable. No individual participants were recruited and no identifiable individual-level data were accessed.}
 
-\dataavailability{The curated dataset, reproducible processing code, machine-readable metadata, validation outputs, and documentation are available at \url{https://github.com/cvidalmsu/chile-ed-resp-benchmark}. The version submitted with this Data Descriptor will be archived in Zenodo and the version-specific DOI will be inserted before publication. The upstream records are publicly available from the Chilean Ministry of Health/DEIS dataset \textit{Atenciones de urgencias de causas respiratorias por semana epidemiol\'ogica}, resource ID \texttt{\sourceid}. The repository records the retrieval timestamp and SHA-256 checksum of the source snapshot used for each release.}
+\dataavailability{The curated dataset, processing code, machine-readable descriptive audits, validation outputs, and documentation are publicly available in the \datasetname{} GitHub repository at \url{\dataseturl}. Version 1.1.0 was built from the official DEIS/SADU Parquet snapshot retrieved on 30 August 2026 at 23:38:36 UTC (67,929,078 bytes). The source SHA-256 is \texttt{\seqsplit{ef21c621527091dc109ecda8a66f11199d8680b50435d4d77cf69626a08d90e0}}. The upstream records are publicly available from the Chilean Ministry of Health/DEIS dataset \textit{Atenciones de urgencias de causas respiratorias por semana epidemiol\'ogica}, resource ID \texttt{\sourceid}.}
 
 \acknowledgments{The authors acknowledge the Departamento de Estad\'isticas e Informaci\'on de Salud (DEIS), Ministerio de Salud de Chile, for maintaining the public SADU respiratory-emergency dataset used as the source of this curated resource.}
 
@@ -291,7 +519,9 @@ In summary, \datasetname{} converts a valuable but operationally oriented Chilea
 \end{paracol}
 
 \reftitle{References}
+\begingroup\sloppy
 \externalbibliography{yes}
 \bibliography{references}
+\endgroup
 
 \end{document}
