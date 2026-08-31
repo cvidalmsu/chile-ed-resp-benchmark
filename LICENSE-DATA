@@ -10,10 +10,35 @@ therefore distributed under **CC BY-NC 2.0**. Attribution to the original source
 must be retained, and changes introduced by the curation pipeline must be
 identified.
 
+## Redistribution and adaptation checklist
+
+The license permits reproduction, non-commercial sharing, and the creation and
+non-commercial distribution of adaptations. Anyone redistributing the curated
+tables or a further adaptation must:
+
+1. credit the Ministerio de Salud de Chile / DEIS as the original source;
+2. identify the official dataset title, resource ID, and source URL shown below;
+3. state that Chile-ED-Resp transformed the source through filtering, type
+   normalization, fixed-calendar expansion, pivoting, and feature engineering;
+4. identify any additional changes made by the redistributor;
+5. include the CC BY-NC 2.0 license URI
+   https://creativecommons.org/licenses/by-nc/2.0/ and preserve applicable
+   copyright, license, and disclaimer notices;
+6. avoid terms or technological measures that restrict recipients' exercise of
+   the licensed rights; and
+7. avoid use primarily intended for commercial advantage or private monetary
+   compensation unless separate permission has been obtained from the
+   applicable rights holder.
+
+Redistribution must not imply endorsement by the Ministerio de Salud de Chile,
+DEIS, or the Chile-ED-Resp authors. The complete CC BY-NC 2.0 legal code, rather
+than this practical summary, is authoritative.
+
 Official source:
 "Atenciones de urgencias de causas respiratorias por semana epidemiológica"
 Resource ID: ae6c9887-106d-4e98-8875-40bf2b836041
 Publisher: Ministerio de Salud de Chile / DEIS
+Source URL: https://datos.gob.cl/dataset/atenciones-de-urgencia-causas-respiratorias
 
 The source Parquet itself is not relicensed by the authors. The software code in
 this repository is licensed separately under the MIT License.

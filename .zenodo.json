@@ -1,7 +1,7 @@
 {
   "title": "Chile-ED-Resp: A Curated and Reproducible Weekly Hospital Dataset for Respiratory Emergency-Demand Forecasting in Chile",
   "upload_type": "dataset",
-  "description": "Curated, analysis-ready secondary dataset derived from official DEIS/SADU weekly respiratory emergency records for Chilean hospital emergency units, 2022-2025. All released count observations are derived from official DEIS/SADU records.",
+  "description": "Version 1.1.0 of a curated secondary dataset derived from official DEIS/SADU weekly respiratory emergency records for 180 Chilean hospitals on a fixed 209-position 2022-2025 statistical-week calendar. Explicit zeros remain distinct from missing records, and rolling-origin evaluation code recomputes predictors at each origin.",
   "creators": [
     {"name": "Balcázar-Quimi, Wilman"},
     {"name": "Angulo, Carla"},

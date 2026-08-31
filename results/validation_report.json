@@ -1,10 +1,10 @@
 {
-  "validated_utc": "2026-08-08T11:55:04.629524+00:00",
+  "validated_utc": "2026-08-31T09:19:47.767961+00:00",
   "long_rows": 449844,
   "forecast_rows": 37620,
   "hospitals": 180,
   "causes": 12,
-  "pass": 10,
+  "pass": 15,
   "warn": 0,
   "fail": 0
 }

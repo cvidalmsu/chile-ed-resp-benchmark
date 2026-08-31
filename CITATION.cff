@@ -2,8 +2,7 @@ cff-version: 1.2.0
 title: "Chile-ED-Resp: A Curated and Reproducible Weekly Hospital Dataset for Respiratory Emergency-Demand Forecasting in Chile"
 message: "If you use this dataset, cite the Data descriptor and the original DEIS/SADU source."
 type: dataset
-version: 1.0.0
-doi: 10.5281/zenodo.REPLACE_AFTER_RELEASE
+version: 1.1.0
 url: https://github.com/cvidalmsu/chile-ed-resp-benchmark
 license: CC-BY-NC-2.0
 authors:
