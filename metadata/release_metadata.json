@@ -1,6 +1,8 @@
 {
   "dataset_title": "Chile-ED-Resp: Curated weekly hospital respiratory emergency-demand data for Chile",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "zenodo_version_doi": "10.5281/zenodo.22209795",
+  "zenodo_concept_doi": "10.5281/zenodo.22209794",
   "source": "DEIS/SADU official open-data Parquet",
   "source_resource_id": "ae6c9887-106d-4e98-8875-40bf2b836041",
   "analysis_period": [

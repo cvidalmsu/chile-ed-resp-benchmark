@@ -47,26 +47,19 @@ Verifica que existan:
 
 Comprueba que `validation_report.json` tenga `fail: 0`.
 
-## 4. Crear release y DOI
+## 4. Release y DOI de la versión 1.1.0
 
-1. GitHub -> **Releases** -> **Draft a new release**.
-2. Tag: `v1.0.0`.
-3. Título: `Chile-ED-Resp v1.0.0 - curated DEIS/SADU release`.
-4. Publica el release.
-5. Vincula el repositorio con Zenodo y archiva el release.
-6. Sustituye `10.5281/zenodo.REPLACE_AFTER_RELEASE` en `main.tex`, `README.md`, `CITATION.cff` y `.zenodo.json` por el DOI real.
-7. Recompila el paper y confirma que GitHub y Zenodo sean públicos antes de enviar a *Data*.
+La release `v1.1.0` fue archivada automáticamente mediante la integración GitHub--Zenodo.
+
+- DOI específico de la versión: `10.5281/zenodo.22209795`
+- DOI conceptual para todas las versiones: `10.5281/zenodo.22209794`
+
+El DOI específico se utiliza en `main.tex`, `README.md`, `CITATION.cff` y `metadata/release_metadata.json`. El registro y el repositorio deben permanecer públicos antes de reenviar el manuscrito a *Data*.
 
 ## 5. Importante sobre licencia
 
 El portal oficial informa una licencia Creative Commons Non-Commercial. Por ello, el dataset derivado se distribuye como **CC BY-NC 2.0**. El código permanece bajo MIT.
 
-## 6. Reemplazo automático del DOI
+## 6. Actualizaciones posteriores
 
-Cuando Zenodo entregue el DOI de versión, puedes actualizar los metadatos principales con:
-
-```bash
-python scripts/update_doi.py 10.5281/zenodo.XXXXXXXX
-```
-
-Después recompila el paper y realiza un commit final.
+Para versiones futuras, publica una nueva release después de actualizar `.zenodo.json` y `CITATION.cff`. Zenodo asignará un nuevo DOI específico de versión y conservará el DOI conceptual que vincula todas las versiones.

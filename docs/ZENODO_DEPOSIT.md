@@ -1,15 +1,11 @@
-# Zenodo deposit required before resubmission
+# Zenodo archive for Version 1.1.0
 
-No Zenodo DOI for Chile-ED-Resp v1.1.0 was publicly identifiable when the Reviewer 3 revision was prepared. Do not cite a placeholder as an issued DOI.
+The GitHub release `v1.1.0` was permanently archived in Zenodo on 31 August 2026.
 
-## Deposit steps
+- Version-specific DOI: [10.5281/zenodo.22209795](https://doi.org/10.5281/zenodo.22209795)
+- All-versions concept DOI: [10.5281/zenodo.22209794](https://doi.org/10.5281/zenodo.22209794)
+- Archived GitHub release: `cvidalmsu/chile-ed-resp-benchmark-v1.1.0.zip`
+- Resource type: Dataset
+- Access: Open
 
-1. Update the public GitHub repository with the reviewed files.
-2. Confirm that the workflow passes, `results/validation_report.json` reports zero failures, and the release data/checksums are present.
-3. Create and publish the Git tag and release `v1.1.0`.
-4. Archive that exact release in Zenodo using `.zenodo.json` as metadata.
-5. Record the version-specific DOI assigned by Zenodo.
-6. Run `python scripts/update_doi.py 10.5281/zenodo.XXXXXXXX`.
-7. Recompile the manuscript and response letter, then confirm that the DOI resolves to the public v1.1.0 record.
-
-The Reviewer 3 response must not be submitted as fully resolved until this deposit has been published and the issued DOI has replaced the pending status.
+The version-specific DOI must be used when citing the exact release described in the manuscript. The concept DOI may be used when referring generically to the dataset across versions. The DOI is recorded in the manuscript Data Availability Statement, `README.md`, `CITATION.cff`, and `metadata/release_metadata.json`.

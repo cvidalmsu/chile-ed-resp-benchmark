@@ -117,4 +117,9 @@ Lag and rolling fields are computed only after each hospital has been crossed wi
 
 ## DOI
 
-A DOI has not yet been minted. Version 1.1.0 must be deposited in Zenodo and the resulting version DOI inserted here, in `CITATION.cff`, and in the manuscript before resubmission. No placeholder DOI should be cited as if it were an issued identifier.
+Version 1.1.0 is permanently archived in Zenodo:
+
+- Version-specific DOI: [10.5281/zenodo.22209795](https://doi.org/10.5281/zenodo.22209795)
+- All-versions concept DOI: [10.5281/zenodo.22209794](https://doi.org/10.5281/zenodo.22209794)
+
+Use the version-specific DOI when citing the exact dataset release analyzed in the manuscript.

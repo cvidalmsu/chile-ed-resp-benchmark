@@ -11,21 +11,13 @@
 7. Revisa `metadata/hospital_coverage.csv` para conocer exactamente qué hospitales cumplen el umbral de cobertura >= 95%.
 8. Revisa `metadata/release_metadata.json` para los conteos exactos de filas, columnas, hospitales y causas de la versión que enviarás.
 
-## B. Crear el release permanente
+## B. Release permanente completada
 
-1. GitHub -> **Releases -> Draft a new release**.
-2. Tag: `v1.0.0`.
-3. Título sugerido: `Chile-ED-Resp v1.0.0 - curated DEIS/SADU release`.
-4. Publica el release.
-5. Archiva ese release en Zenodo.
-6. Copia el DOI de versión asignado por Zenodo.
-7. Ejecuta:
-
-```bash
-python scripts/update_doi.py 10.5281/zenodo.XXXXXXXX
-```
-
-8. Commit y push de los archivos actualizados.
+1. Release archivada: `v1.1.0`.
+2. DOI específico de la versión: `10.5281/zenodo.22209795`.
+3. DOI conceptual para todas las versiones: `10.5281/zenodo.22209794`.
+4. Confirma que el registro de Zenodo y el repositorio continúen públicos.
+5. Realiza el commit y push final de `main.tex`, `main.pdf`, `README.md`, `CITATION.cff`, `references.bib` y los metadatos actualizados.
 
 ## C. Paper
 
